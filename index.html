@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#080808">
+  <meta name="description" content="Milenio Software — geleceğin sistemleri saf kodla inşa edilir.">
+  <title>Milenio Software — Geleceğin sistemleri</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="Milenio Software ana sayfa"><img class="wordmark-logo wordmark-logo--dark" src="assets/milenio-mark-white.png" alt=""><img class="wordmark-logo wordmark-logo--light" src="assets/milenio-mark-black.png" alt=""><span class="wordmark-name"><span>Milenio</span><span class="wordmark-light">Software</span></span></a>
+    <nav aria-label="Ana menü"><a href="#projects">Laboratuvar</a><a href="#about">Yaklaşım</a><a href="#contact">İletişim</a></nav>
+    <div class="header-controls">
+      <div class="language-picker">
+        <button class="language-toggle mono" id="language-toggle" type="button" aria-label="Dili değiştir" aria-haspopup="menu" aria-expanded="false" aria-controls="language-menu">TR <span aria-hidden="true">▾</span></button>
+        <div class="language-menu mono" id="language-menu" role="menu" aria-label="Dil seçimi" hidden>
+          <button type="button" role="menuitemradio" aria-checked="true" data-language="tr"><span>Türkçe</span><small>TR</small></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-language="en"><span>English</span><small>EN</small></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-language="de"><span>Deutsch</span><small>DE</small></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-language="fr"><span>Français</span><small>FR</small></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-language="es"><span>Español</span><small>ES</small></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-language="it"><span>Italiano</span><small>IT</small></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-language="ru"><span>Русский</span><small>RU</small></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-language="zh"><span>中文</span><small>ZH</small></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-language="ja"><span>日本語</span><small>JA</small></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-language="pt"><span>Português</span><small>PT</small></button>
+        </div>
+      </div>
+      <button class="theme-toggle mono" id="theme-toggle" type="button" aria-label="Açık moda geç" aria-pressed="false"><span class="theme-toggle-icon" aria-hidden="true">☼</span><span class="theme-toggle-label">AÇIK MOD</span></button>
+    </div>
+    <a class="header-status" href="#projects"><span></span> [ GELİŞTİRME SÜRÜYOR ] <b>↘</b></a>
+  </header>
+  <main id="top">
+    <section class="hero">
+      <div class="hero-gridline" aria-hidden="true"></div>
+      <div class="hero-blueprint" id="hero-blueprint" aria-hidden="true">
+        <svg class="blueprint-layer blueprint-layer--back" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">
+          <g class="blueprint-spokes">
+            <line x1="500" y1="350" x2="500" y2="20" /><line x1="500" y1="350" x2="733" y2="117" />
+            <line x1="500" y1="350" x2="980" y2="350" /><line x1="500" y1="350" x2="733" y2="583" />
+            <line x1="500" y1="350" x2="500" y2="680" /><line x1="500" y1="350" x2="267" y2="583" />
+            <line x1="500" y1="350" x2="20" y2="350" /><line x1="500" y1="350" x2="267" y2="117" />
+          </g>
+        </svg>
+        <svg class="blueprint-layer blueprint-layer--middle" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">
+          <g class="blueprint-orbit blueprint-orbit--middle"><circle cx="500" cy="350" r="205" /><path d="M500 145h15m-15 0a205 205 0 0 1 38 4" /><circle cx="538" cy="149" r="2.5" /></g>
+          <g class="blueprint-orbit blueprint-orbit--inner"><circle cx="500" cy="350" r="115" /><path d="M500 235h12m-12 0a115 115 0 0 1 25 3" /><circle cx="525" cy="238" r="2" /></g>
+          <circle class="blueprint-center" cx="500" cy="350" r="2" />
+        </svg>
+        <svg class="blueprint-layer blueprint-layer--front" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">
+          <g class="blueprint-orbit blueprint-orbit--outer"><circle cx="500" cy="350" r="300" /><path d="M500 50h18m-18 0a300 300 0 0 1 52 5" /><circle cx="552" cy="55" r="3" /></g>
+        </svg>
+      </div>
+      <div class="hero-meta"><span>BAĞIMSIZ YAZILIM STÜDYOSU</span><span>MILENIO SOFTWARE</span></div>
+      <div class="hero-main">
+        <div class="hero-index mono">MS—001 <span> / YAZILIM SİSTEMLERİ</span></div>
+        <div class="hero-copy"><h1 aria-label="Milenio Software">Milenio Software</h1><p class="hero-subtitle">Geleceğin Sistemleri</p></div>
+        <div class="hero-bottom"><p>İşin karmaşıklığını azaltan, düşünülerek tasarlanmış dijital araçlar. Küçük bir stüdyo. Uzun ömürlü sistemlere odaklı.</p><a href="#projects" class="round-link" aria-label="Projeleri keşfet"><span>↓</span></a></div>
+      </div>
+      <div class="hero-foot mono"><span>2026</span></div>
+    </section>
+
+    <section class="project-section" id="projects" aria-label="Laboratuvar: geliştirme süreçleri">
+      <div class="project-sticky">
+        <div class="project-heading"><span class="section-kicker mono">LABORATUVAR <i></i> GELİŞTİRME SÜREÇLERİ</span><span class="project-counter mono"><span id="current-index">01</span> <small>/ 03</small></span></div>
+        <div class="project-layout">
+          <div class="project-list" aria-label="Geliştirme süreçleri">
+            <article class="project-step is-active" data-step="0"><span class="step-number mono">01 / 03</span><h2>01_KONSEPT / FİKİR</h2><p>Milenio Software'in tüm projeleri önce dijital kara tahtada başlar. Karmaşık problemleri basite indirgemek için mimariyi koddan önce zihinde kuruyoruz.</p><span class="step-state mono">[ aşama: planlama ]</span></article>
+            <article class="project-step" data-step="1"><span class="step-number mono">02 / 03</span><h2>02_ZANAAT / SAF KOD</h2><p>Hazır şablonlar veya şişirilmiş kütüphaneler kullanmıyoruz. Geliştirmekte olduğumuz her deneysel arayüzü, en yüksek hız için saf CSS ve JavaScript ile sıfırdan kuruyoruz.</p><span class="step-state mono">[ ortam: yerel_sunucu ]</span></article>
+            <article class="project-step" data-step="2"><span class="step-number mono">03 / 03</span><h2>03_YİNELEME / ÖRNEK SÜRÜM</h2><p>Bir girişimin en güçlü aracı hızdır. Fikirleri hızla çalışan örnek sürümlere dönüştürüyor, hatalardan öğreniyor ve kodu her gün daha iyi hale getiriyoruz.</p><span class="step-state mono">[ sürüm: test_aşamasında ]</span></article>
+            <div class="step-progress" aria-hidden="true"><span id="step-progress-fill"></span></div>
+          </div>
+          <div class="workspace-wrap">
+            <div class="workspace-browser" id="workspace-browser">
+              <div class="browser-bar"><div class="traffic-lights"><i></i><i></i><i></i></div><div class="browser-address"><span class="lock-icon">⌑</span> çalışma-alanı.milenio.yerel</div><span class="browser-menu">•••</span></div>
+              <div class="workspace-screen">
+                <div class="workspace-sidebar"><div class="ws-logo">LABORATUVAR</div><button class="ws-nav active" type="button" data-lab-step="0" aria-pressed="true"><b aria-hidden="true">▦</b> Fikir</button><button class="ws-nav" type="button" data-lab-step="1" aria-pressed="false"><b aria-hidden="true">☷</b> Saf kod</button><button class="ws-nav" type="button" data-lab-step="2" aria-pressed="false"><b aria-hidden="true">▤</b> İterasyon</button><div class="ws-sidebar-bottom mono">ÇALIŞMA ALANI<br><span>YEREL ÖNİZLEME</span></div></div>
+                <div class="ws-main">
+                  <div class="ws-topline"><span class="mono">ÇALIŞMA ALANI / <b id="workspace-section">FİKİR GELİŞTİRME</b></span><span class="ws-avatar">M</span></div>
+                  <div class="screen-frames">
+                    <section class="screen-state is-visible" data-screen="0"><div class="screen-title"><div><span class="screen-eyebrow mono">MİLENIO SOFTWARE / LABORATUVAR</span><h3>Önce düşün. Sonra inşa et.</h3></div><span class="build-pill mono">[ aşama: planlama ]</span></div><div class="overview-grid"><div class="overview-panel"><span class="panel-label mono">PROBLEM ALANI</span><div class="chart-bars"><i style="--h:32%"></i><i style="--h:49%"></i><i style="--h:42%"></i><i style="--h:67%"></i><i style="--h:56%"></i><i style="--h:82%"></i><i style="--h:62%"></i><i style="--h:91%"></i><i style="--h:73%"></i><i style="--h:100%"></i></div><div class="chart-labels mono"><span>GİRDİ</span><span>MODEL</span><span>MANTIK</span><span>PLAN</span></div></div><div class="overview-panel task-snapshot"><span class="panel-label mono">MİMARİ NOTLAR</span><div class="snapshot-row"><i class="check-mark">✓</i><span>Problemi tanımla</span><b>01</b></div><div class="snapshot-row"><i></i><span>Karmaşıklığı sadeleştir</span><b>02</b></div><div class="snapshot-row"><i></i><span>Mimariyi zihinde kur</span><b>03</b></div></div></div><div class="screen-foot mono"><span><i></i> [ odak: yalın_mantık ]</span><span>ÖNCE DÜŞÜN, SONRA KODLA</span></div></section>
+                    <section class="screen-state" data-screen="1"><div class="screen-title"><div><span class="screen-eyebrow mono">MİLENIO SOFTWARE / ZANAAT</span><h3>Hafif. Hızlı. Sıfırdan.</h3></div><span class="build-pill mono">[ ortam: yerel_sunucu ]</span></div><div class="overview-grid"><div class="overview-panel"><span class="panel-label mono">CSS / GÖRSEL KATMAN</span><div class="chart-bars"><i style="--h:32%"></i><i style="--h:49%"></i><i style="--h:42%"></i><i style="--h:67%"></i><i style="--h:56%"></i><i style="--h:82%"></i><i style="--h:62%"></i><i style="--h:91%"></i><i style="--h:73%"></i><i style="--h:100%"></i></div><div class="chart-labels mono"><span>DÜZEN</span><span>STİL</span><span>MANTIK</span><span>GELİŞTİRME</span></div></div><div class="overview-panel task-snapshot"><span class="panel-label mono">GELİŞTİRME İLKELERİ</span><div class="snapshot-row"><i class="check-mark">✓</i><span>Saf JavaScript</span><b>JS</b></div><div class="snapshot-row"><i class="check-mark">✓</i><span>Modern CSS</span><b>CSS</b></div><div class="snapshot-row"><i class="check-mark">✓</i><span>Sıfır bağımlılık</span><b>0</b></div></div></div><div class="screen-foot mono"><span><i></i> [ altyapı: saf_js ]</span><span>YALIN CSS · AĞIR KÜTÜPHANE YOK</span></div></section>
+                    <section class="screen-state" data-screen="2"><div class="screen-title"><div><span class="screen-eyebrow mono">MİLENIO SOFTWARE / YİNELEME</span><h3>Deneyerek iyileştir.</h3></div><span class="build-pill mono">[ sürüm: test_aşamasında ]</span></div><div class="data-view"><div class="data-header mono"><span>YİNELEME</span><span>ETKİNLİK</span><span>DURUM</span></div><div class="data-row"><b>prototip</b><span>Fikir → çalışan arayüz</span><i>TEST EDİLİYOR</i></div><div class="data-row"><b>geri_bildirim</b><span>Gözlem → öğrenim</span><i>İNCELEME</i></div><div class="data-row"><b>iyileştirme</b><span>Kod → iyileştirme</span><i>GELİŞTİRİLİYOR</i></div><div class="data-row dimmed"><b>sonraki_yineleme</b><span>Yeni yaklaşım</span><i>SÜRÜYOR</i></div><div class="data-note mono">[ depo: etkin_dal ] <span>İNŞA ET · ÖĞREN · İYİLEŞTİR</span></div></div><div class="screen-foot mono"><span><i></i> PROTOTİP DÖNGÜSÜ: ETKİN</span><span>GERİ BİLDİRİM → İYİLEŞTİRME</span></div></section>
+                  </div>
+                </div>
+              </div>
+              <div class="browser-status mono"><span><i></i> SÜRÜMÜ ÖNİZLE</span><span id="browser-page">/laboratuvar/fikir</span><span>100%</span></div>
+            </div>
+            <span class="workspace-caption mono">ŞEK. 01 — LABORATUVAR / GELİŞTİRME SÜRECİ</span>
+          </div>
+        </div>
+        <div class="project-bottom mono"><span>KEŞFETMEK İÇİN KAYDIR</span><div><i class="progress-segment active"></i><i class="progress-segment"></i><i class="progress-segment"></i></div><span id="project-status">LABORATUVAR: FİKİR VE MİMARİ</span></div>
+      </div>
+    </section>
+
+    <section class="active-builds" aria-labelledby="active-builds-title">
+      <div class="active-builds-heading">
+        <h2 class="mono section-kicker" id="active-builds-title">AKTİF PROJELER</h2>
+        <span class="mono">GELİŞTİRİLİYOR</span>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="about-meta mono"><span>02 — İLKELER</span><span>NASIL ÜRETİYORUZ</span></div>
+      <div class="about-content">
+        <div class="about-number">M<span>·</span>S</div>
+        <div><span class="section-kicker mono">TASARIMDA SADELİK</span><h2>Az konuşur.<br><span>İyi inşa eder.</span></h2></div>
+        <p>Her geliştirme, net bir probleme ve özenli bir uygulamaya dayanmalı. Bağımsız bir yazılım stüdyosu olarak fikirleri araştırıyor, geliştirme sürecini açıkça paylaşıyoruz.</p>
+      </div>
+      <div class="principle-line"><span class="mono">01 / NETLİK</span><span>Önce problemi anla.</span><span class="mono">02 / USTALIK</span><span>Detaylara özen göster.</span><span class="mono">03 / DÜRÜSTLÜK</span><span>Gerçeği olduğu gibi paylaş.</span></div>
+    </section>
+
+    <section class="capabilities" aria-labelledby="capabilities-title">
+      <div class="capabilities-heading">
+        <span class="mono">03 — YETENEKLER</span>
+        <h2 id="capabilities-title">Yetenekler ve teknolojiler</h2>
+      </div>
+      <div class="capabilities-grid">
+        <article class="capability-group">
+          <h3 class="mono">TEMEL</h3>
+          <ul>
+            <li>Özel Web Uygulamaları</li>
+            <li>API Mimarisi</li>
+            <li>Performans Mühendisliği</li>
+          </ul>
+        </article>
+        <article class="capability-group">
+          <h3 class="mono">TEKNOLOJİLER</h3>
+          <ul>
+            <li>Saf JavaScript (ES6+)</li>
+            <li>Modern CSS / Izgara</li>
+            <li>Node.js</li>
+            <li>Nextflow İş Hattı</li>
+          </ul>
+        </article>
+        <article class="capability-group">
+          <h3 class="mono">ODAK</h3>
+          <ul>
+            <li>Sıfır Bağımlılıklı Geliştirme</li>
+            <li>Ölçeklenebilir Altyapı</li>
+            <li>Temiz Kod İyileştirme</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="contact" id="contact"><div class="contact-top mono"><span>04 — İLETİŞİM</span><span>AÇIK İLETİŞİM HATTI</span></div><div class="contact-layout"><div class="contact-intro"><span class="section-kicker mono">BİRLİKTE ÜRETELİM</span><h2>Bir şey<br><span>kuralım.</span></h2><p>Bir fikriniz, sorunuz ya da çözmek istediğiniz bir problem mi var? Mesaj bırakın, konuşmayı başlatalım.</p><a class="contact-direct mono" href="#contact-form"><span class="contact-direct-below">[ İLETİŞİM: AŞAĞIDAKİ FORM ] ↓</span><span class="contact-direct-side">[ İLETİŞİM: SAĞDAKİ FORM ] →</span></a></div>
+      <form class="terminal" id="contact-form" action="https://formspree.io/f/mvkkwebd" method="POST"><div class="terminal-top"><div class="traffic-lights"><i></i><i></i><i></i></div><span class="mono">milenio-software — iletişim</span><span class="terminal-live mono"><i></i> HAZIR</span></div><div class="terminal-body"><label for="email"><span class="prompt mono">milenio-software:~$ eposta_gir:</span><input id="email" type="email" name="email" placeholder="ad@firma.com" autocomplete="email" required></label><label for="name"><span class="prompt mono">milenio-software:~$ isim_gir:</span><input id="name" type="text" name="name" placeholder="Adınız soyadınız" autocomplete="name" required minlength="2"></label><label for="message"><span class="prompt mono">milenio-software:~$ proje_detayi:</span><textarea id="message" name="message" rows="3" placeholder="Biraz projenizden bahsedin..." required minlength="10"></textarea></label><div class="terminal-actions"><span class="mono">[sistem: aktif] // hedef: contact@mileniosoftware.com</span><button type="submit">MESAJI GÖNDER <span>↗</span></button></div><div class="terminal-output mono" id="terminal-output" role="log" aria-label="Terminal çıktısı" aria-live="polite" aria-relevant="additions text"></div><p class="terminal-response mono" id="form-message" role="status" aria-live="polite"></p></div></form>
+    </div><div class="contact-bottom mono"><span>MILENIO SOFTWARE © <span id="year">2026</span></span><span>ÖZENLE İNŞA EDİLDİ <i>✳</i></span><a href="#top">BAŞA DÖN ↑</a></div></section>
+  </main>
+</body>
+</html>
