@@ -933,8 +933,8 @@ while (textWalker.nextNode()) {
 
 const languageDescriptions = {
   tr: {
-    title: 'Milenio Software — Geleceğin sistemleri',
-    description: 'Milenio Software — geleceğin sistemleri saf kodla inşa edilir.',
+    title: 'Milenio Software | Bağımsız Yazılım Stüdyosu',
+    description: 'Milenio Software, gelecek için yalın dijital araçlar geliştiren bağımsız bir yazılım stüdyosudur. Brütalist web tasarımı, yazılım mimarisi ve performansa odaklanır.',
     themeLight: 'AÇIK MOD', themeDark: 'KOYU MOD',
     themeLightAria: 'Açık moda geç', themeDarkAria: 'Koyu moda geç',
     languageAria: 'Dil seçimi',
