@@ -2,13 +2,30 @@ const projectSection = document.querySelector('.project-section');
 const projectSteps = [...document.querySelectorAll('.project-step')];
 const screens = [...document.querySelectorAll('.screen-state')];
 const progressFill = document.querySelector('#step-progress-fill');
-const progressSegments = [...document.querySelectorAll('.progress-segment')];
+const trackerSteps = [...document.querySelectorAll('[data-tracker-step]')];
 const currentIndex = document.querySelector('#current-index');
 const projectStatus = document.querySelector('#project-status');
 const workspaceSection = document.querySelector('#workspace-section');
 const browserPage = document.querySelector('#browser-page');
 const browser = document.querySelector('#workspace-browser');
 const labButtons = [...document.querySelectorAll('[data-lab-step]')];
+
+const recruitingAscii = String.raw`
+      M\               /M
+      M \             / M
+      M  \           /  M
+      M   \         /   M
+      M    \       /    M
+      M     \     /     M
+      M      \   /      M
+      M       \ /       M
+      M        V        M
+      M                 M
+      M I L E N I O  /  S O F T W A R E
+`;
+console.log('%c' + recruitingAscii, 'color:#888;font:12px/1.15 monospace;');
+console.log('%cMilenio Laboratuvarına hoş geldin. Buraya kadar geldiysen kod kalitesine önem veriyorsun demektir. contact@mileniosoftware.com üzerinden bizimle iletişime geç.', 'color:#888;font:13px/1.5 monospace;');
+
 let currentLanguage = 'tr';
 const supportedLanguages = ['tr', 'en', 'de', 'fr', 'es', 'it', 'ru', 'zh', 'ja', 'pt'];
 const themeLabels = {
@@ -28,6 +45,23 @@ try {
 }
 const heroBlueprint = document.querySelector('#hero-blueprint');
 const heroTitle = document.querySelector('.hero-copy h1');
+const globalSpotlight = document.querySelector('.global-spotlight');
+let globalSpotlightFrame = 0;
+let globalSpotlightX = window.innerWidth / 2;
+let globalSpotlightY = window.innerHeight / 2;
+
+if (globalSpotlight) {
+  globalSpotlight.style.transform = `translate3d(${globalSpotlightX - 190}px, ${globalSpotlightY - 190}px, 0)`;
+  window.addEventListener('pointermove', (event) => {
+    globalSpotlightX = event.clientX;
+    globalSpotlightY = event.clientY;
+    if (globalSpotlightFrame) return;
+    globalSpotlightFrame = window.requestAnimationFrame(() => {
+      globalSpotlight.style.transform = `translate3d(${globalSpotlightX - 190}px, ${globalSpotlightY - 190}px, 0)`;
+      globalSpotlightFrame = 0;
+    });
+  }, { passive:true });
+}
 
 if (heroBlueprint) {
   const heroGridline = heroBlueprint.parentElement.querySelector('.hero-gridline');
@@ -72,8 +106,8 @@ if (heroBlueprint) {
   let targetSpotY = window.innerHeight / 2;
   let easedSpotX = targetSpotX;
   let easedSpotY = targetSpotY;
-  let targetSpotOpacity = 0;
-  let easedSpotOpacity = 0;
+  let targetSpotOpacity = 1;
+  let easedSpotOpacity = 1;
 
   function setSpotlight(event) {
     const bounds = heroBlueprint.getBoundingClientRect();
@@ -84,7 +118,7 @@ if (heroBlueprint) {
   }
 
   function clearSpotlight() {
-    targetSpotOpacity = 0;
+    targetSpotOpacity = 1;
     requestBlueprintFrame();
   }
 
@@ -187,16 +221,16 @@ if (heroBlueprint) {
 }
 
 const stepLabels = {
-  tr: ['LABORATUVAR: FİKİR VE MİMARİ', 'LABORATUVAR: YALIN KOD', 'LABORATUVAR: PROTOTİP YİNELEMESİ'],
-  en: ['LAB: IDEA & ARCHITECTURE', 'LAB: LEAN CODE', 'LAB: PROTOTYPE ITERATION'],
-  de: ['LABOR: IDEE & ARCHITEKTUR', 'LABOR: KLARER CODE', 'LABOR: PROTOTYP-ITERATION'],
-  fr: ['LABORATOIRE : IDÉE & ARCHITECTURE', 'LABORATOIRE : CODE ÉPURÉ', 'LABORATOIRE : ITÉRATION DU PROTOTYPE'],
-  es: ['LABORATORIO: IDEA Y ARQUITECTURA', 'LABORATORIO: CÓDIGO LIMPIO', 'LABORATORIO: ITERACIÓN DEL PROTOTIPO'],
-  it: ['LABORATORIO: IDEA E ARCHITETTURA', 'LABORATORIO: CODICE ESSENZIALE', 'LABORATORIO: ITERAZIONE DEL PROTOTIPO'],
-  ru: ['ЛАБОРАТОРИЯ: ИДЕЯ И АРХИТЕКТУРА', 'ЛАБОРАТОРИЯ: ЧИСТЫЙ КОД', 'ЛАБОРАТОРИЯ: ИТЕРАЦИЯ ПРОТОТИПА'],
-  zh: ['实验室：构思与架构', '实验室：精简代码', '实验室：原型迭代'],
-  ja: ['ラボ：アイデアと設計', 'ラボ：シンプルなコード', 'ラボ：プロトタイプの反復'],
-  pt: ['LABORATÓRIO: IDEIA E ARQUITETURA', 'LABORATÓRIO: CÓDIGO ENXUTO', 'LABORATÓRIO: ITERAÇÃO DO PROTÓTIPO'],
+  tr: ['LABORATUVAR: FİKİR VE MİMARİ', 'LABORATUVAR: TEMİZ KOD', 'LABORATUVAR: MOBİL PROTOTİP'],
+  en: ['LAB: IDEA & ARCHITECTURE', 'LAB: CLEAN CODE', 'LAB: MOBILE PROTOTYPE'],
+  de: ['LABOR: IDEE & ARCHITEKTUR', 'LABOR: SAUBERER CODE', 'LABOR: MOBILER PROTOTYP'],
+  fr: ['LABORATOIRE : IDÉE & ARCHITECTURE', 'LABORATOIRE : CODE ÉPURÉ', 'LABORATOIRE : PROTOTYPE MOBILE'],
+  es: ['LABORATORIO: IDEA Y ARQUITECTURA', 'LABORATORIO: CÓDIGO LIMPIO', 'LABORATORIO: PROTOTIPO MÓVIL'],
+  it: ['LABORATORIO: IDEA E ARCHITETTURA', 'LABORATORIO: CODICE PULITO', 'LABORATORIO: PROTOTIPO MOBILE'],
+  ru: ['ЛАБОРАТОРИЯ: ИДЕЯ И АРХИТЕКТУРА', 'ЛАБОРАТОРИЯ: ЧИСТЫЙ КОД', 'ЛАБОРАТОРИЯ: МОБИЛЬНЫЙ ПРОТОТИП'],
+  zh: ['实验室：构思与架构', '实验室：整洁代码', '实验室：移动原型'],
+  ja: ['ラボ：アイデアと設計', 'ラボ：クリーンコード', 'ラボ：モバイルプロトタイプ'],
+  pt: ['LABORATÓRIO: IDEIA E ARQUITETURA', 'LABORATÓRIO: CÓDIGO LIMPO', 'LABORATÓRIO: PROTÓTIPO MÓVEL'],
 };
 const screenLabels = {
   tr: ['FİKİR GELİŞTİRME', 'ZANAAT', 'YİNELEME'],
@@ -253,8 +287,11 @@ function updateProject() {
     screens.forEach((screen, index) => {
       screen.classList.toggle('is-visible', index === activeStep);
     });
-    progressSegments.forEach((segment, index) => {
-      segment.classList.toggle('active', index === activeStep);
+    trackerSteps.forEach((step, index) => {
+      step.classList.toggle('is-active', index === activeStep);
+      step.classList.toggle('is-complete', index < activeStep);
+      if (index === activeStep) step.setAttribute('aria-current', 'step');
+      else step.removeAttribute('aria-current');
     });
 
     setActiveLabButton(activeStep);
@@ -429,7 +466,7 @@ function writeTerminalOutput(message, command) {
 
 function translateEnglishPhrase(phrase, language = currentLanguage) {
   if (language === 'en') return phrase;
-  const dictionary = { ...(englishTranslations[language] || {}), ...(extraTranslations[language] || {}) };
+  const dictionary = { ...(englishTranslations[language] || {}), ...(extraTranslations[language] || {}), ...(mobileStudioTranslations[language] || {}) };
   if (dictionary[phrase]) return dictionary[phrase];
   return Object.entries(dictionary)
     .sort(([left], [right]) => right.length - left.length)
@@ -512,66 +549,66 @@ const revealParagraphsTr = revealParagraphs.map((paragraph) => paragraph.textCon
 const revealParagraphsByLanguage = {
   tr: revealParagraphsTr,
   en: [
-  'Thoughtfully designed digital tools that reduce complexity. A small studio focused on systems built to last.',
+  'We build independent mobile apps and digital tools that simplify complex processes. We focus on long-lasting, high-performance systems without the weight of large libraries.',
   'Every build should begin with a clear problem and careful execution. As an independent software studio, we explore ideas and share our process openly.',
   'Have an idea, a question, or a problem to solve? Leave a message and let’s start a conversation.',
   ],
   de: [
-    'Durchdachte digitale Werkzeuge, die Komplexität reduzieren. Ein kleines Studio mit Fokus auf langlebige Systeme.',
+    'Wir entwickeln unabhängige mobile Apps und digitale Werkzeuge, die komplexe Abläufe vereinfachen. Ohne schwerfällige Bibliotheken konzentrieren wir uns auf langlebige, leistungsstarke Systeme.',
     'Jede Entwicklung beginnt mit einem klaren Problem und sorgfältiger Umsetzung. Als unabhängiges Softwarestudio erforschen wir Ideen und teilen unseren Prozess offen.',
     'Haben Sie eine Idee, eine Frage oder ein Problem? Hinterlassen Sie eine Nachricht und lassen Sie uns sprechen.',
   ],
   fr: [
-    'Des outils numériques conçus avec soin pour réduire la complexité. Un petit studio dédié aux systèmes durables.',
+    'Nous créons des applications mobiles indépendantes et des outils numériques qui simplifient les processus complexes. Sans bibliothèques lourdes, nous privilégions des systèmes durables et performants.',
     'Chaque réalisation part d’un problème clair et d’une exécution soignée. Studio logiciel indépendant, nous explorons les idées et partageons notre démarche.',
     'Une idée, une question ou un problème à résoudre ? Laissez-nous un message et commençons à échanger.',
   ],
   es: [
-    'Herramientas digitales bien diseñadas que reducen la complejidad. Un pequeño estudio centrado en sistemas duraderos.',
+    'Creamos aplicaciones móviles independientes y herramientas digitales que simplifican procesos complejos. Sin bibliotecas pesadas, nos centramos en sistemas duraderos y de alto rendimiento.',
     'Cada desarrollo parte de un problema claro y una ejecución cuidadosa. Como estudio independiente, exploramos ideas y compartimos nuestro proceso.',
     '¿Tienes una idea, una pregunta o un problema que resolver? Déjanos un mensaje y empecemos a conversar.',
   ],
   it: [
-    'Strumenti digitali progettati con cura per ridurre la complessità. Un piccolo studio dedicato a sistemi duraturi.',
+    'Sviluppiamo app mobili indipendenti e strumenti digitali che semplificano processi complessi. Senza librerie pesanti, puntiamo su sistemi duraturi e performanti.',
     'Ogni sviluppo nasce da un problema chiaro e da un’esecuzione attenta. Come studio indipendente esploriamo idee e condividiamo il nostro processo.',
     'Hai un’idea, una domanda o un problema da risolvere? Lascia un messaggio e iniziamo a parlarne.',
   ],
   ru: [
-    'Продуманные цифровые инструменты, упрощающие сложные процессы. Небольшая студия, создающая долговечные системы.',
+    'Мы создаём независимые мобильные приложения и цифровые инструменты, упрощающие сложные процессы. Без тяжёлых библиотек разрабатываем долговечные и быстрые системы.',
     'Каждая разработка начинается с ясной задачи и внимательной реализации. Мы независимая студия: исследуем идеи и открыто делимся процессом.',
     'Есть идея, вопрос или задача? Оставьте сообщение — начнём разговор.',
   ],
   zh: [
-    '精心设计的数字工具，帮助化繁为简。小型工作室，专注打造经久耐用的系统。',
+    '我们开发独立移动应用和数字工具，简化复杂流程。避免臃肿的库，专注构建持久、高性能的系统。',
     '每个项目都从明确的问题和周密的执行开始。作为独立软件工作室，我们探索创意并公开分享开发过程。',
     '有想法、问题或需要解决的难题？给我们留言，让我们开始交流。',
   ],
   ja: [
-    '複雑さを減らす、丁寧に設計されたデジタルツール。長く使えるシステムに取り組む小さなスタジオです。',
+    '複雑な業務をシンプルにする、独立系モバイルアプリとデジタルツールを開発します。大きなライブラリに頼らず、長く使える高性能なシステムを目指します。',
     '明確な課題と丁寧な実装から開発を始めます。独立系ソフトウェアスタジオとして、アイデアを探り、制作過程を公開しています。',
     'アイデアや質問、解決したい課題がありますか？メッセージをお寄せください。',
   ],
   pt: [
-    'Ferramentas digitais bem pensadas que reduzem a complexidade. Um pequeno estúdio focado em sistemas duradouros.',
+    'Desenvolvemos aplicativos móveis independentes e ferramentas digitais que simplificam processos complexos. Sem bibliotecas pesadas, focamos em sistemas duradouros e eficientes.',
     'Cada projeto começa com um problema claro e uma execução cuidadosa. Como estúdio independente, exploramos ideias e compartilhamos nosso processo.',
     'Tem uma ideia, dúvida ou problema para resolver? Envie uma mensagem e vamos conversar.',
   ],
 };
 const textTranslations = {
-  'Laboratuvar':'Lab', 'Yaklaşım':'Approach', 'İletişim':'Contact',
+  'Laboratuvar':'Lab', 'Projeler':'Projects', 'Yaklaşım':'Approach', 'İletişim':'Contact',
   '[ GELİŞTİRME SÜRÜYOR ]':'[ DEVELOPMENT IN PROGRESS ]',
   'BAĞIMSIZ YAZILIM STÜDYOSU':'INDEPENDENT SOFTWARE STUDIO',
-  '/ YAZILIM SİSTEMLERİ':'/ SOFTWARE SYSTEMS', 'Geleceğin Sistemleri':'Systems for the Future',
+  '/ YAZILIM SİSTEMLERİ':'/ SOFTWARE SYSTEMS', 'Geleceğin Mobil Sistemleri':'Mobile Systems for the Future',
   'MS—001 ':'MS—001 ', 'Projeleri keşfet':'Explore projects',
   'LABORATUVAR':'LAB', 'GELİŞTİRME SÜREÇLERİ':'DEVELOPMENT PROCESS',
   'Laboratuvar: geliştirme süreçleri':'Lab: development process', 'Geliştirme süreçleri':'Development process',
-  '01_KONSEPT / FİKİR':'01_CONCEPT / IDEA',
-  'Her proje bir soruyla başlar. Önce ihtiyacı ve yapıyı netleştirir, sonra kodlamaya geçeriz.':'Every Milenio Software project starts on a digital whiteboard. We shape the architecture in our minds before writing code, turning complex problems into simpler ones.',
-  '[ aşama: planlama ]':'[ stage: planning ]', '02_ZANAAT / SAF KOD':'02_CRAFT / PURE CODE',
-  'İhtiyacımız olmayan araçları eklemiyoruz. Her arayüzü kendi ihtiyacına göre kuruyor, hız ve bakım kolaylığını baştan düşünüyoruz.':'We avoid ready-made templates and bloated libraries. Every experimental interface is built from scratch with pure CSS and JavaScript for speed.',
-  '[ ortam: yerel_sunucu ]':'[ environment: local_server ]', '03_YİNELEME / ÖRNEK SÜRÜM':'03_ITERATION / PROTOTYPE',
-  'Fikirleri önce çalışan bir örneğe dönüştürüyoruz. Sonra deneyip geri bildirimlere göre eksiklerini tamamlıyoruz.':'Improve through iteration.',
-  '[ sürüm: test_aşamasında ]':'[ build: testing ]', 'Fikir':'Idea', 'Saf kod':'Pure code', 'İterasyon':'Iteration',
+  '01_KONSEPT / SAF FİKİR':'01_CONCEPT / PURE IDEA',
+  'Her proje bir soruyla başlar. Genç bir startup refleksiyle önce sorunun özünü ve mobil dünyadaki karşılığını netleştirir, mimariyi kurarız.':'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.',
+  '[ aşama: planlama ]':'[ stage: planning ]', '02_ZANAAT / TEMİZ KOD':'02_CRAFT / CLEAN CODE',
+  'İhtiyacımız olmayan hiçbir hazır aracı uygulamalarımıza eklemiyoruz. Sıfır bağımlılık (Zero-dependency) prensibiyle, her satırı hız ve pil tasarrufu odaklı yazıyoruz.':'We add no ready-made tools that we do not need. Following a zero-dependency principle, we write every line for speed and battery efficiency.',
+  '[ altyapı: saf_kod ]':'[ infrastructure: pure_code ]', '03_YİNELEME / PROTOTİP':'03_ITERATION / PROTOTYPE',
+  'Fikirleri hızla çalışan mobil prototiplere dönüştürürüz. Deneysel yaklaşımlarla arayüzü ve performansı en yalın hale getirene kadar optimize ederiz.':'We quickly turn ideas into working mobile prototypes. We refine the interface and performance through experiments until both are as lean as possible.',
+  '[ sürüm: test_aşamasında ]':'[ build: in_testing ]', 'Fikir':'Idea', 'Saf kod':'Pure code', 'İterasyon':'Iteration',
   'ÇALIŞMA ALANI':'WORKSPACE', 'YEREL ÖNİZLEME':'LOCAL PREVIEW', 'ÇALIŞMA ALANI /':'WORKSPACE /',
   'çalışma-alanı.milenio.yerel':'workspace.milenio.local',
   'FİKİR GELİŞTİRME':'IDEA DEVELOPMENT', 'MİLENIO SOFTWARE / LABORATUVAR':'MILENIO SOFTWARE / LAB',
@@ -591,26 +628,41 @@ const textTranslations = {
   'SÜRÜYOR':'IN PROGRESS', '[ depo: etkin_dal ]':'[ repository: active_branch ]', 'İNŞA ET · ÖĞREN · İYİLEŞTİR':'BUILD · LEARN · IMPROVE',
   'PROTOTİP DÖNGÜSÜ: ETKİN':'PROTOTYPE LOOP: ACTIVE', 'GERİ BİLDİRİM → İYİLEŞTİRME':'FEEDBACK → IMPROVEMENT',
   'SÜRÜMÜ ÖNİZLE':'PREVIEW BUILD', 'ŞEK. 01 — LABORATUVAR / GELİŞTİRME SÜRECİ':'FIG. 01 — LAB / DEVELOPMENT PROCESS',
-  'AŞAĞI KAYDIR':'SCROLL TO EXPLORE', 'AKTİF PROJELER':'ACTIVE BUILDS',
+  'AŞAĞI KAYDIR':'SCROLL TO EXPLORE', '[01/03 KONSEPT]':'[01/03 CONCEPT]', '[02/03 ZANAAT]':'[02/03 CRAFT]', '[03/03 YİNELEME]':'[03/03 ITERATION]', 'AKTİF PROJELER':'ACTIVE BUILDS',
+  '[ durum: laboratuvarda ]':'[ status: in the lab ]',
+  "Geleceğin sistemleri için prototip aşamasındaki mobil konseptler mutfakta pişiyor. Yakında App Store ve Google Play'de.":'Mobile concepts in the prototype stage are taking shape. Coming soon to the App Store and Google Play.',
   'Milenio İşletim Sistemi':'Milenio Operating System', '[ durum: alfa / özel_çekirdek ]':'[ status: alpha / custom_kernel ]',
   'Vertex Veri Hattı':'Vertex Pipeline', '[ durum: aktif_geliştirme / veri_altyapısı ]':'[ status: active_build / data_infrastructure ]',
   '02 — İLKELER':'02 — PRINCIPLES', 'NASIL ÜRETİYORUZ':'HOW WE BUILD', 'SADE TASARIM':'SIMPLICITY BY DESIGN',
   'Az söz.':'Less talk.', 'Sağlam iş.':'Built well.',
   '01 / NETLİK':'01 / CLARITY', 'Önce problemi anla.':'Understand the problem first.', '02 / USTALIK':'02 / CRAFT',
-  'Detaylara özen göster.':'Care about the details.', '03 / DÜRÜSTLÜK':'03 / HONESTY', 'Gerçeği olduğu gibi paylaş.':'Share the truth as it is.',
+  'Önce problemi anla, mobil deneyimi sadeleştir.':'Understand the problem first; simplify the mobile experience.',
+  'Arayüz akışlarına ve kodun hafifliğine özen göster.':'Care about interface flows and lightweight code.', '03 / DÜRÜSTLÜK':'03 / HONESTY', 'Geliştirme süreçlerini şeffaf ve yalın tut.':'Keep development transparent and lean.',
   '03 — ÇALIŞMA ALANLARI':'03 — CAPABILITIES', 'Çalışma alanlarımız':'Capabilities & technology',
-  'TEMEL':'CORE', 'Özel Web Uygulamaları':'Custom Web Applications', 'API Mimarisi':'API Architecture',
-  'Performans Mühendisliği':'Performance Engineering', 'TEKNOLOJİLER':'STACK', 'Saf JavaScript (ES6+)':'Vanilla JavaScript (ES6+)',
-  'Modern CSS / Grid':'Modern CSS / Grid', 'Nextflow İş Hattı':'Nextflow Pipeline', 'ODAK':'FOCUS',
-  'Gereksiz bağımlılıkları azaltma':'Zero-Dependency Development', 'Ölçeklenebilir Altyapı':'Scalable Infrastructure',
-  'Kod kalitesini iyileştirme':'Clean Code Optimization', '04 — İLETİŞİM':'04 — CONTACT', 'BİZE ULAŞIN':'OPEN CHANNEL',
-  'İLETİŞİM':'LET’S TALK', 'Projenizi':'Your project', 'konuşalım.':'— let’s talk.',
+  'TEMEL ODAK':'CORE FOCUS', 'Bağımsız Mobil Araçlar':'Independent Mobile Tools',
+  'Karmaşık günlük işleri akıllı telefonlarda saniyeler içinde çözen minimalist mobil uygulamalar.':'Minimal mobile apps that solve complex everyday tasks on a smartphone in seconds.',
+  'Yalın Kullanıcı Deneyimi':'Lean User Experience',
+  'Ekranı gereksiz buton, reklam veya şişirilmiş animasyonlarla doldurmayan; doğrudan çözüme odaklanan arayüzler.':'Interfaces that skip clutter, ads, and excessive animation to focus on the solution.',
+  'Performans Mühendisliği':'Performance Engineering',
+  'Telefonun işlemcisini yormayan ve bataryayı sömürmeyen optimize edilmiş sistemler.':'Optimized systems that go easy on the processor and battery.',
+  'TEKNOLOJİLER':'TECHNOLOGIES', 'Saf JavaScript (ES6+)':'Vanilla JavaScript (ES6+)',
+  'Temiz, kütüphanesiz ve hızlı mantık yapısı.':'Clean, dependency-free logic built for speed.',
+  'Modern CSS / Grid':'Modern CSS / Grid', 'Esnek ve her ekrana kusursuz oturan brütalist tasarımlar.':'Flexible, brutalist designs that adapt cleanly to every screen.',
+  'Hafif Node.js':'Lightweight Node.js', 'Arka planda uygulamalarımızı besleyen, sunucuyu yormayan veri mimarisi.':'A lean data architecture that powers our apps without burdening the server.',
+  'Mobil Sistem Mimarisi':'Mobile Systems Architecture', 'Mobil platformlar için optimize edilmiş mantık modelleri.':'Logic models optimized for mobile platforms.',
+  'BİZİM FARKIMIZ':'WHAT SETS US APART', 'Gereksiz Bağımlılıkları Azaltma':'Fewer Unnecessary Dependencies',
+  'Hazır kütüphanelerin hantallığından kaçıp uygulama boyutunu düşük tutuyoruz.':'We avoid the weight of off-the-shelf libraries and keep app sizes small.',
+  'Minimum Kaynak Tüketimi':'Minimal Resource Use', 'İnternet kotasını ve cihaz belleğini koruyan akıllı algoritmalar geliştiriyoruz.':'We build smart algorithms that conserve data and device memory.',
+  'Zanaatkâr Kod Kalitesi':'Crafted Code', 'Yapay zekâ üretimi genel şablonlara yaslanmadan, her satırı düşünerek saf kod yazıyoruz.':'We write and review every line ourselves instead of relying on generic AI-generated templates.',
+  '04 — İLETİŞİM':'04 — CONTACT', 'BİZE ULAŞIN':'OPEN CHANNEL',
+  'İLETİŞİM':'LET’S TALK', 'Fikirleri':'Let’s talk about', 'konuşalım.':'ideas.',
+  'Bir startup fikriniz mi var, saf kod felsefesini mi tartışmak istiyorsunuz yoksa sadece selam mı vermek istiyorsunuz? Doğrudan kurucuya ulaşın.':'Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.',
   '[ FORM: AŞAĞIDA ] ↓':'[ CONTACT: FORM BELOW ] ↓',
   '[ FORM: SAĞDA ] →':'[ CONTACT: FORM ON THE RIGHT ] →',
   'milenio-software — iletişim':'milenio-software — contact', 'HAZIR':'READY', 'milenio-software:~$ eposta_gir:':'milenio-software:~$ enter_email:',
-  'milenio-software:~$ isim_gir:':'milenio-software:~$ enter_name:', 'milenio-software:~$ proje_detayi:':'milenio-software:~$ project_context:',
-  'Adınız soyadınız':'Your name', 'Biraz projenizden bahsedin...':'Tell us a little about your project...',
-  '[form: yalnızca_doğrulama]':'[form: validation_only]', 'MESAJI GÖNDER':'Submit', 'Terminal çıktısı':'Terminal output',
+  'milenio-software:~$ isim_gir:':'milenio-software:~$ enter_name:', 'milenio-software:~$ mesajiniz':'milenio-software:~$ project_idea:',
+  'Adınız soyadınız':'Your name', 'Mesajınızı buraya bırakın...':'Leave your message here...',
+  '[form: yalnızca_doğrulama]':'[form: validation_only]', 'MESAJ GÖNDER':'SEND MESSAGE', 'Terminal çıktısı':'Terminal output',
   'MILENIO SOFTWARE © ':'MILENIO SOFTWARE © ', 'ÖZENLE GELİŞTİRİLDİ':'BUILT WITH CARE', 'BAŞA DÖN ↑':'BACK TO TOP ↑',
 };
 const englishTranslations = {
@@ -921,6 +973,104 @@ const extraTranslations = {
     '[ System: Stable // Runtime: Vanilla JavaScript // Dependencies: 0 ]':'[ Sistema: estável // Ambiente: JavaScript puro // Dependências: 0 ]',
   },
 };
+const mobileStudioTranslations = {
+  de: {
+    'Let’s talk about':'Sprechen wir über','ideas.':'Ideen.','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'Haben Sie eine Start-up-Idee, möchten Sie über die Philosophie von reinem Code sprechen oder einfach Hallo sagen? Schreiben Sie direkt dem Gründer.',
+    Projects:'Projekte', 'Mobile Systems for the Future':'Mobile Systeme der Zukunft', '01_CONCEPT / PURE IDEA':'01_KONZEPT / REINE IDEE',
+    'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'Jedes Projekt beginnt mit einer Frage. Mit der Haltung eines Start-ups klären wir das Kernproblem und seine Bedeutung für die mobile Welt, dann entwerfen wir die Architektur.',
+    '02_CRAFT / CLEAN CODE':'02_HANDWERK / SAUBERER CODE',
+    'We add no ready-made tools that we do not need. Following a zero-dependency principle, we write every line for speed and battery efficiency.':'Wir ergänzen keine fertigen Werkzeuge, die wir nicht brauchen. Nach dem Zero-Dependency-Prinzip schreiben wir jede Zeile für Tempo und Akkueffizienz.',
+    '[ infrastructure: pure_code ]':'[ infrastruktur: reiner_code ]', '03_ITERATION / PROTOTYPE':'03_ITERATION / PROTOTYP',
+    'We quickly turn ideas into working mobile prototypes. We refine the interface and performance through experiments until both are as lean as possible.':'Wir machen aus Ideen schnell funktionierende mobile Prototypen. Durch Experimente verbessern wir Oberfläche und Leistung, bis beides möglichst schlank ist.',
+    '[ status: in the lab ]':'[ status: im labor ]', 'Mobile concepts in the prototype stage are taking shape. Coming soon to the App Store and Google Play.':'Mobile Konzepte in der Prototypenphase nehmen Gestalt an. Bald im App Store und bei Google Play.',
+    'Understand the problem first; simplify the mobile experience.':'Erst das Problem verstehen, dann das mobile Erlebnis vereinfachen.', 'Care about interface flows and lightweight code.':'Auf klare Abläufe und schlanken Code achten.', 'Keep development transparent and lean.':'Die Entwicklung transparent und schlank halten.',
+    'Mobile Product Design':'Design mobiler Produkte','Performance-focused Solutions':'Leistungsorientierte Lösungen','Lean Interfaces':'Schlanke Oberflächen','Swift / Kotlin Architecture':'Swift- / Kotlin-Architektur','Reduce Unnecessary Dependencies':'Unnötige Abhängigkeiten reduzieren','Minimize Battery and Data Use':'Akku- und Datenverbrauch senken','Improve Code Quality':'Codequalität verbessern','Capabilities & technology':'Arbeitsbereiche','SEND MESSAGE':'NACHRICHT SENDEN','milenio-software:~$ project_idea:':'milenio-software:~$ projektidee:',
+  },
+  fr: {
+    'Let’s talk about':'Parlons','ideas.':'idées.','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'Vous avez une idée de startup, souhaitez discuter de la philosophie du code pur ou simplement dire bonjour ? Contactez directement le fondateur.',
+    Projects:'Projets','Mobile Systems for the Future':'Systèmes mobiles pour demain','01_CONCEPT / PURE IDEA':'01_CONCEPT / IDÉE PURE',
+    'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'Chaque projet commence par une question. Avec l’agilité d’une jeune entreprise, nous clarifions le problème et son contexte mobile avant de définir l’architecture.',
+    '02_CRAFT / CLEAN CODE':'02_SAVOIR-FAIRE / CODE ÉPURÉ',
+    'We add no ready-made tools that we do not need. Following a zero-dependency principle, we write every line for speed and battery efficiency.':'Nous n’ajoutons aucun outil prêt à l’emploi inutile. Selon le principe zéro dépendance, chaque ligne vise la rapidité et l’autonomie.',
+    '[ infrastructure: pure_code ]':'[ infrastructure : code_pur ]','03_ITERATION / PROTOTYPE':'03_ITÉRATION / PROTOTYPE',
+    'We quickly turn ideas into working mobile prototypes. We refine the interface and performance through experiments until both are as lean as possible.':'Nous transformons rapidement les idées en prototypes mobiles fonctionnels. Nous affinons l’interface et les performances par l’expérimentation.',
+    '[ status: in the lab ]':'[ statut : au laboratoire ]','Mobile concepts in the prototype stage are taking shape. Coming soon to the App Store and Google Play.':'Nos concepts mobiles en phase de prototype prennent forme. Bientôt sur l’App Store et Google Play.',
+    'Understand the problem first; simplify the mobile experience.':'Comprendre le problème, puis simplifier l’expérience mobile.','Care about interface flows and lightweight code.':'Soigner les parcours et la légèreté du code.','Keep development transparent and lean.':'Garder un développement clair et transparent.',
+    'Mobile Product Design':'Conception de produits mobiles','Performance-focused Solutions':'Solutions performantes','Lean Interfaces':'Interfaces épurées','Swift / Kotlin Architecture':'Architecture Swift / Kotlin','Reduce Unnecessary Dependencies':'Réduire les dépendances inutiles','Minimize Battery and Data Use':'Réduire la batterie et les données','Improve Code Quality':'Améliorer la qualité du code','Capabilities & technology':'Nos domaines','SEND MESSAGE':'ENVOYER UN MESSAGE','milenio-software:~$ project_idea:':'milenio-software:~$ idée_projet :',
+  },
+  es: {
+    'Let’s talk about':'Hablemos de','ideas.':'ideas.','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'¿Tienes una idea de startup, quieres hablar de la filosofía del código puro o simplemente saludar? Contacta directamente con el fundador.',
+    Projects:'Proyectos','Mobile Systems for the Future':'Sistemas móviles para el futuro','01_CONCEPT / PURE IDEA':'01_CONCEPTO / IDEA PURA',
+    'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'Cada proyecto empieza con una pregunta. Con mentalidad de startup, aclaramos el problema y su contexto móvil antes de definir la arquitectura.',
+    '02_CRAFT / CLEAN CODE':'02_OFICIO / CÓDIGO LIMPIO',
+    'We add no ready-made tools that we do not need. Following a zero-dependency principle, we write every line for speed and battery efficiency.':'No añadimos herramientas prefabricadas que no necesitamos. Con cero dependencias, escribimos cada línea pensando en la velocidad y el ahorro de batería.',
+    '[ infrastructure: pure_code ]':'[ infraestructura: código_puro ]','03_ITERATION / PROTOTYPE':'03_ITERACIÓN / PROTOTIPO',
+    'We quickly turn ideas into working mobile prototypes. We refine the interface and performance through experiments until both are as lean as possible.':'Convertimos ideas rápidamente en prototipos móviles funcionales. Experimentamos hasta simplificar la interfaz y mejorar el rendimiento.',
+    '[ status: in the lab ]':'[ estado: en el laboratorio ]','Mobile concepts in the prototype stage are taking shape. Coming soon to the App Store and Google Play.':'Los conceptos móviles en fase de prototipo van tomando forma. Pronto en App Store y Google Play.',
+    'Understand the problem first; simplify the mobile experience.':'Primero entiende el problema; simplifica la experiencia móvil.','Care about interface flows and lightweight code.':'Cuida los recorridos y la ligereza del código.','Keep development transparent and lean.':'Mantén el desarrollo claro y transparente.',
+    'Mobile Product Design':'Diseño de productos móviles','Performance-focused Solutions':'Soluciones de alto rendimiento','Lean Interfaces':'Interfaces sencillas','Swift / Kotlin Architecture':'Arquitectura Swift / Kotlin','Reduce Unnecessary Dependencies':'Reducir dependencias innecesarias','Minimize Battery and Data Use':'Reducir batería y datos','Improve Code Quality':'Mejorar la calidad del código','Capabilities & technology':'Áreas de trabajo','SEND MESSAGE':'ENVIAR MENSAJE','milenio-software:~$ project_idea:':'milenio-software:~$ idea_proyecto:',
+  },
+  it: {
+    'Let’s talk about':'Parliamo di','ideas.':'idee.','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'Hai un’idea per una startup, vuoi parlare della filosofia del codice puro o semplicemente salutare? Contatta direttamente il fondatore.',
+    Projects:'Progetti','Mobile Systems for the Future':'Sistemi mobili per il futuro','01_CONCEPT / PURE IDEA':'01_CONCETTO / IDEA PURA',
+    'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'Ogni progetto parte da una domanda. Con l’approccio di una startup, definiamo il problema e il suo contesto mobile prima di progettare l’architettura.',
+    '02_CRAFT / CLEAN CODE':'02_MESTIERE / CODICE PULITO',
+    'We add no ready-made tools that we do not need. Following a zero-dependency principle, we write every line for speed and battery efficiency.':'Non aggiungiamo strumenti pronti che non servono. Seguiamo il principio zero dipendenze e scriviamo ogni riga per velocità e autonomia.',
+    '[ infrastructure: pure_code ]':'[ infrastruttura: codice_puro ]','03_ITERATION / PROTOTYPE':'03_ITERAZIONE / PROTOTIPO',
+    'We quickly turn ideas into working mobile prototypes. We refine the interface and performance through experiments until both are as lean as possible.':'Trasformiamo rapidamente le idee in prototipi mobile funzionanti. Sperimentiamo per rendere interfaccia e prestazioni il più essenziali possibile.',
+    '[ status: in the lab ]':'[ stato: in laboratorio ]','Mobile concepts in the prototype stage are taking shape. Coming soon to the App Store and Google Play.':'I concept mobile in fase di prototipo stanno prendendo forma. Presto su App Store e Google Play.',
+    'Understand the problem first; simplify the mobile experience.':'Prima capisci il problema, poi semplifica l’esperienza mobile.','Care about interface flows and lightweight code.':'Cura i flussi e la leggerezza del codice.','Keep development transparent and lean.':'Mantieni lo sviluppo chiaro e snello.',
+    'Mobile Product Design':'Design di prodotti mobile','Performance-focused Solutions':'Soluzioni performanti','Lean Interfaces':'Interfacce essenziali','Swift / Kotlin Architecture':'Architettura Swift / Kotlin','Reduce Unnecessary Dependencies':'Ridurre le dipendenze inutili','Minimize Battery and Data Use':'Ridurre batteria e dati','Improve Code Quality':'Migliorare la qualità del codice','Capabilities & technology':'Ambiti di lavoro','SEND MESSAGE':'INVIA MESSAGGIO','milenio-software:~$ project_idea:':'milenio-software:~$ idea_progetto:',
+  },
+  ru: {
+    'Let’s talk about':'Поговорим об','ideas.':'идеях.','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'Есть идея для стартапа, хотите обсудить философию чистого кода или просто поздороваться? Свяжитесь напрямую с основателем.',
+    Projects:'Проекты','Mobile Systems for the Future':'Мобильные системы будущего','01_CONCEPT / PURE IDEA':'01_КОНЦЕПЦИЯ / ЧИСТАЯ ИДЕЯ',
+    'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'Каждый проект начинается с вопроса. В духе стартапа мы уточняем суть задачи и её место в мобильном мире, затем проектируем архитектуру.',
+    '02_CRAFT / CLEAN CODE':'02_МАСТЕРСТВО / ЧИСТЫЙ КОД',
+    'We add no ready-made tools that we do not need. Following a zero-dependency principle, we write every line for speed and battery efficiency.':'Мы не добавляем ненужные готовые инструменты. Следуя принципу нулевых зависимостей, пишем код ради скорости и экономии заряда.',
+    '[ infrastructure: pure_code ]':'[ инфраструктура: чистый_код ]','03_ITERATION / PROTOTYPE':'03_ИТЕРАЦИЯ / ПРОТОТИП',
+    'We quickly turn ideas into working mobile prototypes. We refine the interface and performance through experiments until both are as lean as possible.':'Мы быстро превращаем идеи в работающие мобильные прототипы и упрощаем интерфейс, улучшая производительность.',
+    '[ status: in the lab ]':'[ статус: в лаборатории ]','Mobile concepts in the prototype stage are taking shape. Coming soon to the App Store and Google Play.':'Мобильные концепции проходят этап прототипирования. Скоро в App Store и Google Play.',
+    'Understand the problem first; simplify the mobile experience.':'Сначала пойми задачу, затем упрости мобильный опыт.','Care about interface flows and lightweight code.':'Продумывай интерфейс и лёгкость кода.','Keep development transparent and lean.':'Развивай открыто и без лишнего.',
+    'Mobile Product Design':'Дизайн мобильных продуктов','Performance-focused Solutions':'Высокопроизводительные решения','Lean Interfaces':'Лаконичные интерфейсы','Swift / Kotlin Architecture':'Архитектура Swift / Kotlin','Reduce Unnecessary Dependencies':'Сокращать ненужные зависимости','Minimize Battery and Data Use':'Экономить заряд и трафик','Improve Code Quality':'Повышать качество кода','Capabilities & technology':'Направления работы','SEND MESSAGE':'ОТПРАВИТЬ СООБЩЕНИЕ','milenio-software:~$ project_idea:':'milenio-software:~$ идея_проекта:',
+  },
+  zh: {
+    'Let’s talk about':'聊聊','ideas.':'想法。','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'有创业想法、想聊聊纯代码理念，或只是想打个招呼？欢迎直接联系创始人。',
+    Projects:'项目','Mobile Systems for the Future':'面向未来的移动系统','01_CONCEPT / PURE IDEA':'01_构思 / 纯粹创意',
+    'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'每个项目都从一个问题开始。我们以创业团队的敏捷方式明确问题核心及其移动场景，再规划架构。',
+    '02_CRAFT / CLEAN CODE':'02_匠心 / 整洁代码',
+    'We add no ready-made tools that we do not need. Following a zero-dependency principle, we write every line for speed and battery efficiency.':'不添加不需要的现成工具。遵循零依赖原则，让每一行代码都兼顾速度与省电。',
+    '[ infrastructure: pure_code ]':'[ 基础设施：纯净代码 ]','03_ITERATION / PROTOTYPE':'03_迭代 / 原型',
+    'We quickly turn ideas into working mobile prototypes. We refine the interface and performance through experiments until both are as lean as possible.':'我们快速将想法变成可用的移动原型，并通过实验持续精简界面、优化性能。',
+    '[ status: in the lab ]':'[ 状态：实验室开发中 ]','Mobile concepts in the prototype stage are taking shape. Coming soon to the App Store and Google Play.':'移动概念正在原型阶段逐步成形，即将登陆 App Store 和 Google Play。',
+    'Understand the problem first; simplify the mobile experience.':'先理解问题，再简化移动体验。','Care about interface flows and lightweight code.':'重视界面流程与轻量代码。','Keep development transparent and lean.':'保持开发透明、精简。',
+    'Mobile Product Design':'移动产品设计','Performance-focused Solutions':'高性能方案','Lean Interfaces':'简洁界面','Swift / Kotlin Architecture':'Swift / Kotlin 架构','Reduce Unnecessary Dependencies':'减少不必要的依赖','Minimize Battery and Data Use':'降低电量与流量消耗','Improve Code Quality':'提升代码质量','Capabilities & technology':'工作领域','SEND MESSAGE':'发送消息','milenio-software:~$ project_idea:':'milenio-software:~$ 项目想法：',
+  },
+  ja: {
+    'Let’s talk about':'アイデアを','ideas.':'話しましょう。','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'スタートアップのアイデアがある方、ピュアコードの考え方について話したい方、気軽に挨拶したい方も、創業者へ直接ご連絡ください。',
+    Projects:'プロジェクト','Mobile Systems for the Future':'未来のモバイルシステム','01_CONCEPT / PURE IDEA':'01_構想 / 純粋なアイデア',
+    'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'すべてのプロジェクトは問いから始まります。スタートアップらしい機動力で課題の核心とモバイルでの価値を見極め、設計します。',
+    '02_CRAFT / CLEAN CODE':'02_技術 / クリーンコード',
+    'We add no ready-made tools that we do not need. Following a zero-dependency principle, we write every line for speed and battery efficiency.':'不要な既製ツールは加えません。依存を抑え、速度とバッテリー効率を考えて一行ずつ書きます。',
+    '[ infrastructure: pure_code ]':'[ 基盤：ピュアコード ]','03_ITERATION / PROTOTYPE':'03_反復 / プロトタイプ',
+    'We quickly turn ideas into working mobile prototypes. We refine the interface and performance through experiments until both are as lean as possible.':'アイデアを素早く動くモバイルプロトタイプにし、実験を重ねて画面と性能を磨きます。',
+    '[ status: in the lab ]':'[ 状態：ラボで開発中 ]','Mobile concepts in the prototype stage are taking shape. Coming soon to the App Store and Google Play.':'モバイルのコンセプトをプロトタイプとして開発中です。App Store と Google Play で近日公開予定。',
+    'Understand the problem first; simplify the mobile experience.':'まず課題を理解し、モバイル体験をシンプルに。','Care about interface flows and lightweight code.':'画面の流れと軽いコードを大切に。','Keep development transparent and lean.':'透明で無駄のない開発を続ける。',
+    'Mobile Product Design':'モバイルプロダクト設計','Performance-focused Solutions':'高性能なソリューション','Lean Interfaces':'シンプルなインターフェース','Swift / Kotlin Architecture':'Swift / Kotlin アーキテクチャ','Reduce Unnecessary Dependencies':'不要な依存を減らす','Minimize Battery and Data Use':'電池とデータの消費を抑える','Improve Code Quality':'コード品質を高める','Capabilities & technology':'取り組む領域','SEND MESSAGE':'メッセージを送信','milenio-software:~$ project_idea:':'milenio-software:~$ プロジェクトの概要：',
+  },
+  pt: {
+    'Let’s talk about':'Vamos falar de','ideas.':'ideias.','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'Tem uma ideia de startup, quer conversar sobre a filosofia do código puro ou apenas dizer olá? Fale diretamente com o fundador.',
+    Projects:'Projetos','Mobile Systems for the Future':'Sistemas móveis para o futuro','01_CONCEPT / PURE IDEA':'01_CONCEITO / IDEIA PURA',
+    'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'Todo projeto começa com uma pergunta. Com agilidade de startup, entendemos o problema e seu contexto móvel antes de definir a arquitetura.',
+    '02_CRAFT / CLEAN CODE':'02_OFÍCIO / CÓDIGO LIMPO',
+    'We add no ready-made tools that we do not need. Following a zero-dependency principle, we write every line for speed and battery efficiency.':'Não adicionamos ferramentas prontas sem necessidade. Seguimos o princípio de zero dependências e escrevemos cada linha pensando em velocidade e bateria.',
+    '[ infrastructure: pure_code ]':'[ infraestrutura: código_puro ]','03_ITERATION / PROTOTYPE':'03_ITERAÇÃO / PROTÓTIPO',
+    'We quickly turn ideas into working mobile prototypes. We refine the interface and performance through experiments until both are as lean as possible.':'Transformamos ideias rapidamente em protótipos móveis funcionais. Experimentamos até simplificar a interface e otimizar o desempenho.',
+    '[ status: in the lab ]':'[ status: no laboratório ]','Mobile concepts in the prototype stage are taking shape. Coming soon to the App Store and Google Play.':'Conceitos móveis em fase de protótipo estão tomando forma. Em breve na App Store e no Google Play.',
+    'Understand the problem first; simplify the mobile experience.':'Entenda o problema primeiro; simplifique a experiência móvel.','Care about interface flows and lightweight code.':'Cuide dos fluxos da interface e de um código leve.','Keep development transparent and lean.':'Mantenha o desenvolvimento transparente e enxuto.',
+    'Mobile Product Design':'Design de produtos móveis','Performance-focused Solutions':'Soluções de alto desempenho','Lean Interfaces':'Interfaces enxutas','Swift / Kotlin Architecture':'Arquitetura Swift / Kotlin','Reduce Unnecessary Dependencies':'Reduzir dependências desnecessárias','Minimize Battery and Data Use':'Reduzir consumo de bateria e dados','Improve Code Quality':'Melhorar a qualidade do código','Capabilities & technology':'Áreas de atuação','SEND MESSAGE':'ENVIAR MENSAGEM','milenio-software:~$ project_idea:':'milenio-software:~$ ideia_do_projeto:',
+  },
+};
 
 const textNodeRecords = [];
 const textWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
@@ -933,26 +1083,26 @@ while (textWalker.nextNode()) {
 const languageDescriptions = {
   tr: {
     title: 'Milenio Software | Bağımsız Yazılım Stüdyosu',
-    description: 'Milenio Software, işletmeler için web uygulamaları ve dijital sistemler geliştiren bağımsız bir yazılım stüdyosudur. Tasarım, performans ve yazılım mimarisine odaklanır.',
+    description: 'Karmaşık süreçleri sadeleştiren bağımsız mobil uygulamalar ve dijital araçlar geliştiriyoruz.',
     themeLight: 'AÇIK MOD', themeDark: 'KOYU MOD',
     themeLightAria: 'Açık moda geç', themeDarkAria: 'Koyu moda geç',
     languageAria: 'Dil seçimi',
   },
   en: {
     title: 'Milenio Software — Systems for the future',
-    description: 'Milenio Software — systems for the future, built with pure code.',
+    description: 'We build independent mobile apps and digital tools that simplify complex processes.',
     themeLight: 'LIGHT MODE', themeDark: 'DARK MODE',
     themeLightAria: 'Switch to light mode', themeDarkAria: 'Switch to dark mode',
     languageAria: 'Select language',
   },
-  de: { title:'Milenio Software — Systeme für die Zukunft', description:'Milenio Software — Systeme für die Zukunft, mit klarem Code gebaut.', themeLight:'HELLER MODUS', themeDark:'DUNKLER MODUS', themeLightAria:'Hellen Modus aktivieren', themeDarkAria:'Dunklen Modus aktivieren', languageAria:'Sprache auswählen' },
-  fr: { title:'Milenio Software — Les systèmes de demain', description:'Milenio Software — les systèmes de demain, conçus avec un code épuré.', themeLight:'MODE CLAIR', themeDark:'MODE SOMBRE', themeLightAria:'Activer le mode clair', themeDarkAria:'Activer le mode sombre', languageAria:'Choisir la langue' },
-  es: { title:'Milenio Software — Sistemas para el futuro', description:'Milenio Software — sistemas para el futuro, creados con código limpio.', themeLight:'MODO CLARO', themeDark:'MODO OSCURO', themeLightAria:'Activar modo claro', themeDarkAria:'Activar modo oscuro', languageAria:'Elegir idioma' },
-  it: { title:'Milenio Software — Sistemi per il futuro', description:'Milenio Software — sistemi per il futuro, realizzati con codice essenziale.', themeLight:'MODALITÀ CHIARA', themeDark:'MODALITÀ SCURA', themeLightAria:'Attiva modalità chiara', themeDarkAria:'Attiva modalità scura', languageAria:'Seleziona lingua' },
-  ru: { title:'Milenio Software — Системы будущего', description:'Milenio Software — системы будущего, созданные на чистом коде.', themeLight:'СВЕТЛАЯ ТЕМА', themeDark:'ТЁМНАЯ ТЕМА', themeLightAria:'Включить светлую тему', themeDarkAria:'Включить тёмную тему', languageAria:'Выбрать язык' },
-  zh: { title:'Milenio Software — 面向未来的系统', description:'Milenio Software — 以纯粹代码构建面向未来的系统。', themeLight:'浅色模式', themeDark:'深色模式', themeLightAria:'切换到浅色模式', themeDarkAria:'切换到深色模式', languageAria:'选择语言' },
-  ja: { title:'Milenio Software — 未来のためのシステム', description:'Milenio Software — ピュアコードで未来のシステムを構築します。', themeLight:'ライトモード', themeDark:'ダークモード', themeLightAria:'ライトモードに切り替え', themeDarkAria:'ダークモードに切り替え', languageAria:'言語を選択' },
-  pt: { title:'Milenio Software — Sistemas para o futuro', description:'Milenio Software — sistemas para o futuro, construídos com código puro.', themeLight:'MODO CLARO', themeDark:'MODO ESCURO', themeLightAria:'Ativar modo claro', themeDarkAria:'Ativar modo escuro', languageAria:'Selecionar idioma' },
+  de: { title:'Milenio Software — Systeme für die Zukunft', description:'Wir entwickeln unabhängige mobile Apps und digitale Werkzeuge, die komplexe Abläufe vereinfachen.', themeLight:'HELLER MODUS', themeDark:'DUNKLER MODUS', themeLightAria:'Hellen Modus aktivieren', themeDarkAria:'Dunklen Modus aktivieren', languageAria:'Sprache auswählen' },
+  fr: { title:'Milenio Software — Les systèmes de demain', description:'Nous créons des applications mobiles indépendantes et des outils numériques qui simplifient les processus complexes.', themeLight:'MODE CLAIR', themeDark:'MODE SOMBRE', themeLightAria:'Activer le mode clair', themeDarkAria:'Activer le mode sombre', languageAria:'Choisir la langue' },
+  es: { title:'Milenio Software — Sistemas para el futuro', description:'Creamos aplicaciones móviles independientes y herramientas digitales que simplifican procesos complejos.', themeLight:'MODO CLARO', themeDark:'MODO OSCURO', themeLightAria:'Activar modo claro', themeDarkAria:'Activar modo oscuro', languageAria:'Elegir idioma' },
+  it: { title:'Milenio Software — Sistemi per il futuro', description:'Sviluppiamo app mobili indipendenti e strumenti digitali che semplificano processi complessi.', themeLight:'MODALITÀ CHIARA', themeDark:'MODALITÀ SCURA', themeLightAria:'Attiva modalità chiara', themeDarkAria:'Attiva modalità scura', languageAria:'Seleziona lingua' },
+  ru: { title:'Milenio Software — Системы будущего', description:'Мы создаём независимые мобильные приложения и цифровые инструменты, упрощающие сложные процессы.', themeLight:'СВЕТЛАЯ ТЕМА', themeDark:'ТЁМНАЯ ТЕМА', themeLightAria:'Включить светлую тему', themeDarkAria:'Включить тёмную тему', languageAria:'Выбрать язык' },
+  zh: { title:'Milenio Software — 面向未来的系统', description:'我们开发独立移动应用和数字工具，简化复杂流程。', themeLight:'浅色模式', themeDark:'深色模式', themeLightAria:'切换到浅色模式', themeDarkAria:'切换到深色模式', languageAria:'选择语言' },
+  ja: { title:'Milenio Software — 未来のためのシステム', description:'複雑な業務をシンプルにする、独立系モバイルアプリとデジタルツールを開発します。', themeLight:'ライトモード', themeDark:'ダークモード', themeLightAria:'ライトモードに切り替え', themeDarkAria:'ダークモードに切り替え', languageAria:'言語を選択' },
+  pt: { title:'Milenio Software — Sistemas para o futuro', description:'Desenvolvemos aplicativos móveis independentes e ferramentas digitais que simplificam processos complexos.', themeLight:'MODO CLARO', themeDark:'MODO ESCURO', themeLightAria:'Ativar modo claro', themeDarkAria:'Ativar modo escuro', languageAria:'Selecionar idioma' },
 };
 const languageNames = { tr:'Türkçe', en:'English', de:'Deutsch', fr:'Français', es:'Español', it:'Italiano', ru:'Русский', zh:'中文', ja:'日本語', pt:'Português' };
 const languageOptionLabels = {
@@ -1000,6 +1150,8 @@ function updateLocalizedAttributes() {
   document.documentElement.lang = currentLanguage;
   document.title = copy.title;
   document.querySelector('meta[name="description"]').content = copy.description;
+  document.querySelector('meta[property="og:title"]').content = copy.title;
+  document.querySelector('meta[property="og:description"]').content = copy.description;
   languageToggle.innerHTML = `${currentLanguage.toUpperCase()} <span aria-hidden="true">▾</span>`;
   languageToggle.setAttribute('aria-label', `${copy.languageAria}: ${languageNames[currentLanguage]}`);
   document.querySelectorAll('#language-menu [data-language]').forEach((option) => {
@@ -1009,6 +1161,21 @@ function updateLocalizedAttributes() {
   });
   const languageMenuLabels = { tr:'Dil seçimi', en:'Language selection', de:'Sprachauswahl', fr:'Choix de la langue', es:'Selección de idioma', it:'Selezione della lingua', ru:'Выбор языка', zh:'语言选择', ja:'言語選択', pt:'Seleção de idioma' };
   languageMenu.setAttribute('aria-label', languageMenuLabels[currentLanguage]);
+  const trackerCopy = {
+    tr:{label:'Süreç ilerlemesi',steps:['[01/03 KONSEPT]','[02/03 ZANAAT]','[03/03 YİNELEME]']},
+    en:{label:'Process progress',steps:['[01/03 CONCEPT]','[02/03 CRAFT]','[03/03 ITERATION]']},
+    de:{label:'Prozessfortschritt',steps:['[01/03 KONZEPT]','[02/03 HANDWERK]','[03/03 ITERATION]']},
+    fr:{label:'Avancement du processus',steps:['[01/03 CONCEPT]','[02/03 SAVOIR-FAIRE]','[03/03 ITÉRATION]']},
+    es:{label:'Progreso del proceso',steps:['[01/03 CONCEPTO]','[02/03 OFICIO]','[03/03 ITERACIÓN]']},
+    it:{label:'Avanzamento del processo',steps:['[01/03 CONCETTO]','[02/03 MESTIERE]','[03/03 ITERAZIONE]']},
+    ru:{label:'Ход процесса',steps:['[01/03 КОНЦЕПЦИЯ]','[02/03 МАСТЕРСТВО]','[03/03 ИТЕРАЦИЯ]']},
+    zh:{label:'流程进度',steps:['[01/03 构思]','[02/03 打磨]','[03/03 迭代]']},
+    ja:{label:'工程の進行状況',steps:['[01/03 構想]','[02/03 技術]','[03/03 反復]']},
+    pt:{label:'Progresso do processo',steps:['[01/03 CONCEITO]','[02/03 OFÍCIO]','[03/03 ITERAÇÃO]']},
+  }[currentLanguage];
+  const processTracker = document.querySelector('.process-tracker');
+  processTracker.setAttribute('aria-label', trackerCopy.label);
+  trackerSteps.forEach((step, index) => { step.querySelector('span').textContent = trackerCopy.steps[index]; });
   themeToggle.querySelector('.theme-toggle-label').textContent = document.documentElement.dataset.theme === 'light'
     ? copy.themeDark
     : copy.themeLight;
@@ -1018,16 +1185,16 @@ function updateLocalizedAttributes() {
   document.querySelector('.wordmark').setAttribute('aria-label', accessLabels[0]);
   document.querySelector('nav').setAttribute('aria-label', accessLabels[1]);
   const placeholders = {
-    tr:['ad@firma.com','Adınız soyadınız','Biraz projenizden bahsedin...'],
-    en:['name@company.com','Your name','Tell us a little about your project...'],
-    de:['name@firma.de','Ihr Name','Erzählen Sie uns etwas über Ihr Projekt...'],
-    fr:['nom@entreprise.fr','Votre nom','Parlez-nous un peu de votre projet...'],
-    es:['nombre@empresa.es','Tu nombre','Cuéntanos un poco sobre tu proyecto...'],
-    it:['nome@azienda.it','Il tuo nome','Raccontaci qualcosa del tuo progetto...'],
-    ru:['name@company.ru','Ваше имя','Расскажите немного о вашем проекте...'],
-    zh:['name@company.com','您的姓名','请简单介绍您的项目……'],
-    ja:['name@company.com','お名前','プロジェクトについてお聞かせください……'],
-    pt:['nome@empresa.com','Seu nome','Conte um pouco sobre seu projeto...'],
+    tr:['ad@firma.com','Adınız soyadınız','Mesajınızı buraya bırakın...'],
+    en:['name@company.com','Your name','Leave your message here...'],
+    de:['name@firma.de','Ihr Name','Hinterlassen Sie Ihre Nachricht hier...'],
+    fr:['nom@entreprise.fr','Votre nom','Laissez votre message ici...'],
+    es:['nombre@empresa.es','Tu nombre','Deja tu mensaje aquí...'],
+    it:['nome@azienda.it','Il tuo nome','Lascia qui il tuo messaggio...'],
+    ru:['name@company.ru','Ваше имя','Оставьте сообщение здесь...'],
+    zh:['name@company.com','您的姓名','请在此留言……'],
+    ja:['name@company.com','お名前','メッセージはこちらに入力してください……'],
+    pt:['nome@empresa.com','Seu nome','Deixe sua mensagem aqui...'],
   }[currentLanguage];
   document.querySelector('#email').placeholder = placeholders[0];
   document.querySelector('#name').placeholder = placeholders[1];
