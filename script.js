@@ -343,7 +343,36 @@ labButtons.forEach((button) => {
 updateProject();
 
 const siteHeader = document.querySelector('.site-header');
+const mobileMenuToggle = document.querySelector('#mobile-menu-toggle');
+const siteNavigation = document.querySelector('#site-navigation');
 let headerFramePending = false;
+
+function setMobileMenuOpen(open) {
+  mobileMenuToggle.setAttribute('aria-expanded', String(open));
+  mobileMenuToggle.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
+  siteNavigation.classList.toggle('is-open', open);
+}
+
+mobileMenuToggle.addEventListener('click', () => {
+  setMobileMenuOpen(mobileMenuToggle.getAttribute('aria-expanded') !== 'true');
+});
+siteNavigation.addEventListener('click', (event) => {
+  if (event.target.closest('a')) setMobileMenuOpen(false);
+});
+document.addEventListener('pointerdown', (event) => {
+  if (!event.target.closest('.site-header') && mobileMenuToggle.getAttribute('aria-expanded') === 'true') {
+    setMobileMenuOpen(false);
+  }
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && mobileMenuToggle.getAttribute('aria-expanded') === 'true') {
+    setMobileMenuOpen(false);
+    mobileMenuToggle.focus();
+  }
+});
+window.addEventListener('resize', () => {
+  if (window.matchMedia('(min-width: 601px)').matches) setMobileMenuOpen(false);
+}, { passive:true });
 
 function updateHeaderStyle() {
   const currentScrollY = window.scrollY;
