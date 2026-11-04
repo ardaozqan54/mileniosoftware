@@ -1157,17 +1157,37 @@ const languageOptionLabels = {
 let refreshRevealText = () => {};
 let languageChangePending = false;
 
+function positionMobileLanguageMenu() {
+  if (languageMenu.hidden) return;
+  if (!window.matchMedia('(max-width: 600px)').matches) {
+    languageMenu.style.left = '';
+    return;
+  }
+  const toggleRect = languageToggle.getBoundingClientRect();
+  const pickerRect = languageToggle.parentElement.getBoundingClientRect();
+  const menuWidth = languageMenu.getBoundingClientRect().width;
+  const gutter = 8;
+  const viewportLeft = Math.max(gutter, Math.min(toggleRect.right - menuWidth, window.innerWidth - menuWidth - gutter));
+  languageMenu.style.left = `${viewportLeft - pickerRect.left}px`;
+}
+
 function setLanguageMenuOpen(open) {
   window.clearTimeout(languageMenuTimer);
   languageToggle.setAttribute('aria-expanded', String(open));
   if (open) {
     languageMenu.hidden = false;
-    requestAnimationFrame(() => languageMenu.classList.add('is-open'));
+    positionMobileLanguageMenu();
+    requestAnimationFrame(() => {
+      positionMobileLanguageMenu();
+      languageMenu.classList.add('is-open');
+    });
   } else {
     languageMenu.classList.remove('is-open');
     languageMenuTimer = window.setTimeout(() => { languageMenu.hidden = true; }, 180);
   }
 }
+
+window.addEventListener('resize', positionMobileLanguageMenu, { passive:true });
 
 function updateLocalizedAttributes() {
   const copy = languageDescriptions[currentLanguage];
@@ -1220,6 +1240,8 @@ function updateLocalizedAttributes() {
     : copy.themeLightAria);
   document.querySelector('.wordmark').setAttribute('aria-label', accessLabels[0]);
   document.querySelector('nav').setAttribute('aria-label', accessLabels[1]);
+  const statusLabels = { tr:'Geliştirme sürüyor', en:'Development in progress', de:'Entwicklung läuft', fr:'Développement en cours', es:'Desarrollo en curso', it:'Sviluppo in corso', ru:'Разработка продолжается', zh:'正在开发', ja:'開発中', pt:'Desenvolvimento em andamento' };
+  document.querySelector('.header-status').setAttribute('aria-label', statusLabels[currentLanguage]);
   const placeholders = {
     tr:['ad@firma.com','Adınız soyadınız','Mesajınızı buraya bırakın...'],
     en:['name@company.com','Your name','Leave your message here...'],
