@@ -152,6 +152,8 @@ if (heroBlueprint) {
     const introEase = 1 - ((1 - introProgress) ** 3);
     const automaticFade = clamp01((elapsed - 2000) / 2000);
     const scrollProgress = clamp01(easedScroll / 380);
+    const compactViewport = window.matchMedia('(max-width: 600px)').matches;
+    const titleScrollProgress = clamp01(easedScroll / (compactViewport ? 520 : 380));
     const opacity = Math.min(1 - automaticFade, 1 - scrollProgress);
     const scrollAngle = easedScroll * .05;
     const spotSmoothing = reduceBlueprintMotion ? 1 : .18 * frameScale;
@@ -168,8 +170,11 @@ if (heroBlueprint) {
     dataRain.style.opacity = String(Math.min(.7, dissolveProgress * .7) * opacity);
 
     if (heroTitle) {
-      heroTitle.style.setProperty('--hero-letter-spacing', `${(easedScroll * .03).toFixed(3)}px`);
-      heroTitle.style.opacity = String(1 - scrollProgress);
+      const titleLetterSpacing = compactViewport
+        ? Math.min(easedScroll * .006, Math.min(1.6, Math.max(1, window.innerWidth * .0038)))
+        : easedScroll * .03;
+      heroTitle.style.setProperty('--hero-letter-spacing', `${titleLetterSpacing.toFixed(3)}px`);
+      heroTitle.style.opacity = String(1 - titleScrollProgress);
     }
 
     const frontScale = 1 + scrollProgress * .16;

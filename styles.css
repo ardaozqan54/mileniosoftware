@@ -490,7 +490,7 @@ body.has-scroll-lines .scroll-rule { transform:scaleX(0); }
   .roadmap-list p { font-size:9px; }
   .roadmap-status { align-self:end; }
   .hero-main { width:100%; }
-  .hero h1 { font-size:clamp(32px,10vw,58px); letter-spacing:calc(-.075em + var(--hero-letter-spacing, 0px)); }
+  .hero h1 { width:100%; max-width:100%; margin:0 auto; font-size:clamp(26px,8vw,46px); line-height:1.02; letter-spacing:calc(-.075em + var(--hero-letter-spacing, 0px)); white-space:normal; overflow-wrap:normal; }
   .hero-subtitle { margin:14px 0 32px; }
   .hero-foot { gap:12px; font-size:6px; }
   .hero-foot span::before { width:12px; margin-right:5px; }
