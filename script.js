@@ -270,8 +270,9 @@ function setActiveLabButton(index) {
 
 function updateProject() {
   const bounds = projectSection.getBoundingClientRect();
-  const travel = Math.max(1, projectSection.offsetHeight - window.innerHeight);
-  const isStackedLayout = window.innerWidth <= 600 && window.innerHeight <= 600;
+  const stickyViewportHeight = projectSection.querySelector('.project-sticky').offsetHeight;
+  const travel = Math.max(1, projectSection.offsetHeight - stickyViewportHeight);
+  const isStackedLayout = window.matchMedia('(max-width: 600px) and (max-height: 600px)').matches;
   const rawProgress = isStackedLayout
     ? (window.innerHeight - browser.getBoundingClientRect().top) / (browser.getBoundingClientRect().height + window.innerHeight)
     : -bounds.top / travel;
@@ -320,10 +321,12 @@ function scrollToLabStep(step) {
   const progress = (step + 0.5) / 3;
   const bounds = projectSection.getBoundingClientRect();
   const sectionTop = window.scrollY + bounds.top;
-  const isStackedLayout = window.innerWidth <= 600 && window.innerHeight <= 600;
+  const stickyViewportHeight = projectSection.querySelector('.project-sticky').offsetHeight;
+  const travel = Math.max(1, projectSection.offsetHeight - stickyViewportHeight);
+  const isStackedLayout = window.matchMedia('(max-width: 600px) and (max-height: 600px)').matches;
   const targetY = isStackedLayout
     ? window.scrollY + browser.getBoundingClientRect().top - window.innerHeight + progress * (browser.offsetHeight + window.innerHeight)
-    : sectionTop + progress * Math.max(1, projectSection.offsetHeight - window.innerHeight);
+    : sectionTop + progress * travel;
 
   const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     ? 'auto'
@@ -1347,7 +1350,7 @@ document.addEventListener('pointerdown', (event) => {
 });
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-if (window.gsap && window.ScrollTrigger && !reducedMotion.matches) {
+if (window.gsap && window.ScrollTrigger && !reducedMotion.matches && window.matchMedia('(min-width: 601px) and (hover: hover) and (pointer: fine)').matches) {
   gsap.registerPlugin(ScrollTrigger);
 
   function configureTextReveal() {
@@ -1496,7 +1499,7 @@ if (window.gsap && window.ScrollTrigger && !reducedMotion.matches) {
 }
 
 // Görünür geliştirme alanlarında düşük kontrastlı sayı akışını çalıştır.
-if (!reducedMotion.matches && 'IntersectionObserver' in window) {
+if (!reducedMotion.matches && 'IntersectionObserver' in window && window.matchMedia('(min-width: 601px) and (hover: hover) and (pointer: fine)').matches) {
   const rainHosts = document.querySelectorAll('.project-sticky, .active-builds');
 
   rainHosts.forEach((host) => {
