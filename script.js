@@ -424,7 +424,31 @@ document.querySelector('#year').textContent = new Date().getFullYear();
 const form = document.querySelector('#contact-form');
 const formMessage = document.querySelector('#form-message');
 const terminalOutput = document.querySelector('#terminal-output');
+const deliveryIsland = document.querySelector('#delivery-island');
 const commandFields = [form.elements.email, form.elements.name];
+let deliveryIslandTimer = 0;
+let deliveryIslandHideTimer = 0;
+
+function hideDeliveryIsland() {
+  window.clearTimeout(deliveryIslandHideTimer);
+  if (deliveryIsland.hidden) return;
+  deliveryIsland.classList.remove('is-visible');
+  deliveryIsland.classList.add('is-hiding');
+  deliveryIslandHideTimer = window.setTimeout(() => {
+    deliveryIsland.hidden = true;
+    deliveryIsland.classList.remove('is-hiding');
+  }, 340);
+}
+
+function showDeliveryIsland() {
+  window.clearTimeout(deliveryIslandTimer);
+  window.clearTimeout(deliveryIslandHideTimer);
+  deliveryIsland.hidden = false;
+  deliveryIsland.classList.remove('is-hiding');
+  window.requestAnimationFrame(() => deliveryIsland.classList.add('is-visible'));
+  deliveryIslandTimer = window.setTimeout(hideDeliveryIsland, 3000);
+}
+
 const formStatusMessages = {
   tr:{sending:'Mesaj gönderiliyor…',success:'Mesajınız iletildi. Teşekkürler.',failure:'Mesaj gönderilemedi. Lütfen biraz sonra tekrar deneyin.'},
   en:{sending:'Sending message…',success:'Your message was sent. Thank you.',failure:'Message could not be sent. Please try again shortly.'},
@@ -529,7 +553,9 @@ form.addEventListener('submit', (event) => {
       if (!response.ok || result.errors?.length) throw new Error('Formspree rejected the submission');
       form.reset();
       form.dataset.status = 'success';
-      formMessage.textContent = messages.success;
+      terminalOutput.replaceChildren();
+      formMessage.textContent = '';
+      showDeliveryIsland();
     })
     .catch(() => {
       form.dataset.status = 'failure';
@@ -628,9 +654,11 @@ const textTranslations = {
   'SÜRÜYOR':'IN PROGRESS', '[ depo: etkin_dal ]':'[ repository: active_branch ]', 'İNŞA ET · ÖĞREN · İYİLEŞTİR':'BUILD · LEARN · IMPROVE',
   'PROTOTİP DÖNGÜSÜ: ETKİN':'PROTOTYPE LOOP: ACTIVE', 'GERİ BİLDİRİM → İYİLEŞTİRME':'FEEDBACK → IMPROVEMENT',
   'SÜRÜMÜ ÖNİZLE':'PREVIEW BUILD', 'ŞEK. 01 — LABORATUVAR / GELİŞTİRME SÜRECİ':'FIG. 01 — LAB / DEVELOPMENT PROCESS',
-  'AŞAĞI KAYDIR':'SCROLL TO EXPLORE', '[01/03 KONSEPT]':'[01/03 CONCEPT]', '[02/03 ZANAAT]':'[02/03 CRAFT]', '[03/03 YİNELEME]':'[03/03 ITERATION]', 'AKTİF PROJELER':'ACTIVE BUILDS',
-  '[ durum: laboratuvarda ]':'[ status: in the lab ]',
-  "Geleceğin sistemleri için prototip aşamasındaki mobil konseptler mutfakta pişiyor. Yakında App Store ve Google Play'de.":'Mobile concepts in the prototype stage are taking shape. Coming soon to the App Store and Google Play.',
+  'AŞAĞI KAYDIR':'SCROLL TO EXPLORE', '[01/03 KONSEPT]':'[01/03 CONCEPT]', '[02/03 ZANAAT]':'[02/03 CRAFT]', '[03/03 YİNELEME]':'[03/03 ITERATION]',
+  '[ roadmap: 2026 / 2027 ]':'[ roadmap: 2026 / 2027 ]', 'YOL HARİTASI':'ROADMAP',
+  'Aşama 01:':'Stage 01:', 'Stüdyonun felsefesinin ve minimalist web çekirdeğinin kurulması':'Establishing the studio philosophy and minimalist web core', '[ TAMAMLANDI ]':'[ COMPLETE ]',
+  'Aşama 02:':'Stage 02:', 'Deneysel mobil arayüzlerin ve batarya dostu mimarilerin prototiplenmesi':'Prototyping experimental mobile interfaces and battery-friendly architectures', '[ SÜREÇTE ]':'[ IN PROGRESS ]',
+  'Aşama 03:':'Stage 03:', 'İlk bağımsız mobil araçların App Store ve Google Play üzerinde yayınlanması':'Releasing the first independent mobile tools on the App Store and Google Play', '[ PLANLANIYOR ]':'[ PLANNED ]',
   'Milenio İşletim Sistemi':'Milenio Operating System', '[ durum: alfa / özel_çekirdek ]':'[ status: alpha / custom_kernel ]',
   'Vertex Veri Hattı':'Vertex Pipeline', '[ durum: aktif_geliştirme / veri_altyapısı ]':'[ status: active_build / data_infrastructure ]',
   '02 — İLKELER':'02 — PRINCIPLES', 'NASIL ÜRETİYORUZ':'HOW WE BUILD', 'SADE TASARIM':'SIMPLICITY BY DESIGN',
@@ -975,6 +1003,7 @@ const extraTranslations = {
 };
 const mobileStudioTranslations = {
   de: {
+    'ROADMAP':'ROADMAP','Stage 01:':'Phase 01:','Establishing the studio philosophy and minimalist web core':'Aufbau der Studiophilosophie und des minimalistischen Web-Kerns','[ COMPLETE ]':'[ ABGESCHLOSSEN ]','Stage 02:':'Phase 02:','Prototyping experimental mobile interfaces and battery-friendly architectures':'Prototyping experimenteller mobiler Oberflächen und akku-schonender Architekturen','[ IN PROGRESS ]':'[ IN ARBEIT ]','Stage 03:':'Phase 03:','Releasing the first independent mobile tools on the App Store and Google Play':'Veröffentlichung der ersten unabhängigen Mobil-Tools im App Store und bei Google Play','[ PLANNED ]':'[ GEPLANT ]',
     'Let’s talk about':'Sprechen wir über','ideas.':'Ideen.','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'Haben Sie eine Start-up-Idee, möchten Sie über die Philosophie von reinem Code sprechen oder einfach Hallo sagen? Schreiben Sie direkt dem Gründer.',
     Projects:'Projekte', 'Mobile Systems for the Future':'Mobile Systeme der Zukunft', '01_CONCEPT / PURE IDEA':'01_KONZEPT / REINE IDEE',
     'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'Jedes Projekt beginnt mit einer Frage. Mit der Haltung eines Start-ups klären wir das Kernproblem und seine Bedeutung für die mobile Welt, dann entwerfen wir die Architektur.',
@@ -987,6 +1016,7 @@ const mobileStudioTranslations = {
     'Mobile Product Design':'Design mobiler Produkte','Performance-focused Solutions':'Leistungsorientierte Lösungen','Lean Interfaces':'Schlanke Oberflächen','Swift / Kotlin Architecture':'Swift- / Kotlin-Architektur','Reduce Unnecessary Dependencies':'Unnötige Abhängigkeiten reduzieren','Minimize Battery and Data Use':'Akku- und Datenverbrauch senken','Improve Code Quality':'Codequalität verbessern','Capabilities & technology':'Arbeitsbereiche','SEND MESSAGE':'NACHRICHT SENDEN','milenio-software:~$ project_idea:':'milenio-software:~$ projektidee:',
   },
   fr: {
+    'ROADMAP':'FEUILLE DE ROUTE','Stage 01:':'Étape 01 :','Establishing the studio philosophy and minimalist web core':'Définir la philosophie du studio et poser les bases du cœur web minimaliste','[ COMPLETE ]':'[ TERMINÉ ]','Stage 02:':'Étape 02 :','Prototyping experimental mobile interfaces and battery-friendly architectures':'Prototyper des interfaces mobiles expérimentales et des architectures économes en batterie','[ IN PROGRESS ]':'[ EN COURS ]','Stage 03:':'Étape 03 :','Releasing the first independent mobile tools on the App Store and Google Play':'Publier les premiers outils mobiles indépendants sur l’App Store et Google Play','[ PLANNED ]':'[ PRÉVU ]',
     'Let’s talk about':'Parlons','ideas.':'idées.','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'Vous avez une idée de startup, souhaitez discuter de la philosophie du code pur ou simplement dire bonjour ? Contactez directement le fondateur.',
     Projects:'Projets','Mobile Systems for the Future':'Systèmes mobiles pour demain','01_CONCEPT / PURE IDEA':'01_CONCEPT / IDÉE PURE',
     'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'Chaque projet commence par une question. Avec l’agilité d’une jeune entreprise, nous clarifions le problème et son contexte mobile avant de définir l’architecture.',
@@ -999,6 +1029,7 @@ const mobileStudioTranslations = {
     'Mobile Product Design':'Conception de produits mobiles','Performance-focused Solutions':'Solutions performantes','Lean Interfaces':'Interfaces épurées','Swift / Kotlin Architecture':'Architecture Swift / Kotlin','Reduce Unnecessary Dependencies':'Réduire les dépendances inutiles','Minimize Battery and Data Use':'Réduire la batterie et les données','Improve Code Quality':'Améliorer la qualité du code','Capabilities & technology':'Nos domaines','SEND MESSAGE':'ENVOYER UN MESSAGE','milenio-software:~$ project_idea:':'milenio-software:~$ idée_projet :',
   },
   es: {
+    'ROADMAP':'HOJA DE RUTA','Stage 01:':'Etapa 01:','Establishing the studio philosophy and minimalist web core':'Definir la filosofía del estudio y crear el núcleo web minimalista','[ COMPLETE ]':'[ COMPLETADO ]','Stage 02:':'Etapa 02:','Prototyping experimental mobile interfaces and battery-friendly architectures':'Prototipar interfaces móviles experimentales y arquitecturas eficientes con la batería','[ IN PROGRESS ]':'[ EN CURSO ]','Stage 03:':'Etapa 03:','Releasing the first independent mobile tools on the App Store and Google Play':'Publicar las primeras herramientas móviles independientes en App Store y Google Play','[ PLANNED ]':'[ PLANIFICADO ]',
     'Let’s talk about':'Hablemos de','ideas.':'ideas.','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'¿Tienes una idea de startup, quieres hablar de la filosofía del código puro o simplemente saludar? Contacta directamente con el fundador.',
     Projects:'Proyectos','Mobile Systems for the Future':'Sistemas móviles para el futuro','01_CONCEPT / PURE IDEA':'01_CONCEPTO / IDEA PURA',
     'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'Cada proyecto empieza con una pregunta. Con mentalidad de startup, aclaramos el problema y su contexto móvil antes de definir la arquitectura.',
@@ -1011,6 +1042,7 @@ const mobileStudioTranslations = {
     'Mobile Product Design':'Diseño de productos móviles','Performance-focused Solutions':'Soluciones de alto rendimiento','Lean Interfaces':'Interfaces sencillas','Swift / Kotlin Architecture':'Arquitectura Swift / Kotlin','Reduce Unnecessary Dependencies':'Reducir dependencias innecesarias','Minimize Battery and Data Use':'Reducir batería y datos','Improve Code Quality':'Mejorar la calidad del código','Capabilities & technology':'Áreas de trabajo','SEND MESSAGE':'ENVIAR MENSAJE','milenio-software:~$ project_idea:':'milenio-software:~$ idea_proyecto:',
   },
   it: {
+    'ROADMAP':'ROADMAP','Stage 01:':'Fase 01:','Establishing the studio philosophy and minimalist web core':'Definire la filosofia dello studio e creare il nucleo web minimalista','[ COMPLETE ]':'[ COMPLETATO ]','Stage 02:':'Fase 02:','Prototyping experimental mobile interfaces and battery-friendly architectures':'Prototipare interfacce mobile sperimentali e architetture attente alla batteria','[ IN PROGRESS ]':'[ IN CORSO ]','Stage 03:':'Fase 03:','Releasing the first independent mobile tools on the App Store and Google Play':'Pubblicare i primi strumenti mobile indipendenti su App Store e Google Play','[ PLANNED ]':'[ IN PROGRAMMA ]',
     'Let’s talk about':'Parliamo di','ideas.':'idee.','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'Hai un’idea per una startup, vuoi parlare della filosofia del codice puro o semplicemente salutare? Contatta direttamente il fondatore.',
     Projects:'Progetti','Mobile Systems for the Future':'Sistemi mobili per il futuro','01_CONCEPT / PURE IDEA':'01_CONCETTO / IDEA PURA',
     'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'Ogni progetto parte da una domanda. Con l’approccio di una startup, definiamo il problema e il suo contesto mobile prima di progettare l’architettura.',
@@ -1023,6 +1055,7 @@ const mobileStudioTranslations = {
     'Mobile Product Design':'Design di prodotti mobile','Performance-focused Solutions':'Soluzioni performanti','Lean Interfaces':'Interfacce essenziali','Swift / Kotlin Architecture':'Architettura Swift / Kotlin','Reduce Unnecessary Dependencies':'Ridurre le dipendenze inutili','Minimize Battery and Data Use':'Ridurre batteria e dati','Improve Code Quality':'Migliorare la qualità del codice','Capabilities & technology':'Ambiti di lavoro','SEND MESSAGE':'INVIA MESSAGGIO','milenio-software:~$ project_idea:':'milenio-software:~$ idea_progetto:',
   },
   ru: {
+    'ROADMAP':'ПЛАН РАЗВИТИЯ','Stage 01:':'Этап 01:','Establishing the studio philosophy and minimalist web core':'Формирование философии студии и минималистичного веб-ядра','[ COMPLETE ]':'[ ЗАВЕРШЕНО ]','Stage 02:':'Этап 02:','Prototyping experimental mobile interfaces and battery-friendly architectures':'Создание прототипов мобильных интерфейсов и энергоэффективной архитектуры','[ IN PROGRESS ]':'[ В ПРОЦЕССЕ ]','Stage 03:':'Этап 03:','Releasing the first independent mobile tools on the App Store and Google Play':'Публикация первых независимых мобильных инструментов в App Store и Google Play','[ PLANNED ]':'[ ЗАПЛАНИРОВАНО ]',
     'Let’s talk about':'Поговорим об','ideas.':'идеях.','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'Есть идея для стартапа, хотите обсудить философию чистого кода или просто поздороваться? Свяжитесь напрямую с основателем.',
     Projects:'Проекты','Mobile Systems for the Future':'Мобильные системы будущего','01_CONCEPT / PURE IDEA':'01_КОНЦЕПЦИЯ / ЧИСТАЯ ИДЕЯ',
     'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'Каждый проект начинается с вопроса. В духе стартапа мы уточняем суть задачи и её место в мобильном мире, затем проектируем архитектуру.',
@@ -1035,6 +1068,7 @@ const mobileStudioTranslations = {
     'Mobile Product Design':'Дизайн мобильных продуктов','Performance-focused Solutions':'Высокопроизводительные решения','Lean Interfaces':'Лаконичные интерфейсы','Swift / Kotlin Architecture':'Архитектура Swift / Kotlin','Reduce Unnecessary Dependencies':'Сокращать ненужные зависимости','Minimize Battery and Data Use':'Экономить заряд и трафик','Improve Code Quality':'Повышать качество кода','Capabilities & technology':'Направления работы','SEND MESSAGE':'ОТПРАВИТЬ СООБЩЕНИЕ','milenio-software:~$ project_idea:':'milenio-software:~$ идея_проекта:',
   },
   zh: {
+    'ROADMAP':'路线图','Stage 01:':'阶段 01：','Establishing the studio philosophy and minimalist web core':'确立工作室理念并搭建极简网页核心','[ COMPLETE ]':'[ 已完成 ]','Stage 02:':'阶段 02：','Prototyping experimental mobile interfaces and battery-friendly architectures':'为实验性移动界面和省电架构制作原型','[ IN PROGRESS ]':'[ 进行中 ]','Stage 03:':'阶段 03：','Releasing the first independent mobile tools on the App Store and Google Play':'在 App Store 和 Google Play 发布首批独立移动工具','[ PLANNED ]':'[ 计划中 ]',
     'Let’s talk about':'聊聊','ideas.':'想法。','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'有创业想法、想聊聊纯代码理念，或只是想打个招呼？欢迎直接联系创始人。',
     Projects:'项目','Mobile Systems for the Future':'面向未来的移动系统','01_CONCEPT / PURE IDEA':'01_构思 / 纯粹创意',
     'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'每个项目都从一个问题开始。我们以创业团队的敏捷方式明确问题核心及其移动场景，再规划架构。',
@@ -1047,6 +1081,7 @@ const mobileStudioTranslations = {
     'Mobile Product Design':'移动产品设计','Performance-focused Solutions':'高性能方案','Lean Interfaces':'简洁界面','Swift / Kotlin Architecture':'Swift / Kotlin 架构','Reduce Unnecessary Dependencies':'减少不必要的依赖','Minimize Battery and Data Use':'降低电量与流量消耗','Improve Code Quality':'提升代码质量','Capabilities & technology':'工作领域','SEND MESSAGE':'发送消息','milenio-software:~$ project_idea:':'milenio-software:~$ 项目想法：',
   },
   ja: {
+    'ROADMAP':'ロードマップ','Stage 01:':'フェーズ 01：','Establishing the studio philosophy and minimalist web core':'スタジオの理念を定め、ミニマルなウェブ基盤を構築','[ COMPLETE ]':'[ 完了 ]','Stage 02:':'フェーズ 02：','Prototyping experimental mobile interfaces and battery-friendly architectures':'実験的なモバイル画面と省電力アーキテクチャを試作','[ IN PROGRESS ]':'[ 進行中 ]','Stage 03:':'フェーズ 03：','Releasing the first independent mobile tools on the App Store and Google Play':'最初の独立系モバイルツールを App Store と Google Play で公開','[ PLANNED ]':'[ 予定 ]',
     'Let’s talk about':'アイデアを','ideas.':'話しましょう。','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'スタートアップのアイデアがある方、ピュアコードの考え方について話したい方、気軽に挨拶したい方も、創業者へ直接ご連絡ください。',
     Projects:'プロジェクト','Mobile Systems for the Future':'未来のモバイルシステム','01_CONCEPT / PURE IDEA':'01_構想 / 純粋なアイデア',
     'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'すべてのプロジェクトは問いから始まります。スタートアップらしい機動力で課題の核心とモバイルでの価値を見極め、設計します。',
@@ -1059,6 +1094,7 @@ const mobileStudioTranslations = {
     'Mobile Product Design':'モバイルプロダクト設計','Performance-focused Solutions':'高性能なソリューション','Lean Interfaces':'シンプルなインターフェース','Swift / Kotlin Architecture':'Swift / Kotlin アーキテクチャ','Reduce Unnecessary Dependencies':'不要な依存を減らす','Minimize Battery and Data Use':'電池とデータの消費を抑える','Improve Code Quality':'コード品質を高める','Capabilities & technology':'取り組む領域','SEND MESSAGE':'メッセージを送信','milenio-software:~$ project_idea:':'milenio-software:~$ プロジェクトの概要：',
   },
   pt: {
+    'ROADMAP':'ROTEIRO','Stage 01:':'Etapa 01:','Establishing the studio philosophy and minimalist web core':'Definir a filosofia do estúdio e construir o núcleo web minimalista','[ COMPLETE ]':'[ CONCLUÍDO ]','Stage 02:':'Etapa 02:','Prototyping experimental mobile interfaces and battery-friendly architectures':'Prototipar interfaces móveis experimentais e arquiteturas econômicas em bateria','[ IN PROGRESS ]':'[ EM ANDAMENTO ]','Stage 03:':'Etapa 03:','Releasing the first independent mobile tools on the App Store and Google Play':'Lançar as primeiras ferramentas móveis independentes na App Store e no Google Play','[ PLANNED ]':'[ PLANEJADO ]',
     'Let’s talk about':'Vamos falar de','ideas.':'ideias.','Have a startup idea, want to discuss the philosophy of pure code, or just say hello? Reach out directly to the founder.':'Tem uma ideia de startup, quer conversar sobre a filosofia do código puro ou apenas dizer olá? Fale diretamente com o fundador.',
     Projects:'Projetos','Mobile Systems for the Future':'Sistemas móveis para o futuro','01_CONCEPT / PURE IDEA':'01_CONCEITO / IDEIA PURA',
     'Every project begins with a question. With a startup mindset, we clarify the core problem and its place in the mobile world, then shape the architecture.':'Todo projeto começa com uma pergunta. Com agilidade de startup, entendemos o problema e seu contexto móvel antes de definir a arquitetura.',
@@ -1219,7 +1255,9 @@ function renderLanguage(nextLanguage) {
   revealParagraphs.forEach((paragraph, index) => {
     paragraph.textContent = revealParagraphsByLanguage[currentLanguage][index];
   });
-  if (form.dataset.status) formMessage.textContent = formStatusMessages[currentLanguage][form.dataset.status];
+  if (form.dataset.status) formMessage.textContent = form.dataset.status === 'success'
+    ? ''
+    : formStatusMessages[currentLanguage][form.dataset.status];
   const previousTerminalLines = [...terminalOutput.children];
   previousTerminalLines.forEach((line) => {
     if (line.dataset.command) line.textContent = terminalMessage(line.dataset.command);
